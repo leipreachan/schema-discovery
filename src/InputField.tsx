@@ -1,10 +1,10 @@
 import React from 'react';
 
-const TextField: React.FC<FormFieldProps> = ({name, onChange, value, pattern, placeHolder = ""}) => {
+const InputField: React.FC<FormFieldProps> = ({name, onChange, value, pattern, type = "text", placeHolder = ""}) => {
     return (
         <input
             className="m-1 p-1 border-1 border-gray-300 rounded-sm"
-            type="text"
+            type={type}
             id={name}
             value={value}
             onChange={onChange}
@@ -14,4 +14,4 @@ const TextField: React.FC<FormFieldProps> = ({name, onChange, value, pattern, pl
     )
 }
 
-export default TextField;
+export default InputField;

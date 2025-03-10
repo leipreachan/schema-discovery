@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { JsonSchema, JsonSchemaProperty, FormValue, ObjectValue } from './types';
-import TextField from './TextField';
 import SelectField from './SelectField';
 import { resolveRef, getPropertyName } from './utils';
+import InputField from './InputField';
 
 interface FormFieldProps {
   name: string;
@@ -16,18 +16,18 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
   const [additionalFieldName, setAdditionalFieldName] = useState('');
 
   // only object with properties
-  if (property.type === 'object' 
-      && (property.additionalProperties != undefined || property.properties != undefined)) {
+  if (property.type === 'object'
+    && (property.additionalProperties != undefined || property.properties != undefined)) {
     const objectValue = value as ObjectValue;
-    
-    const additionalPropSchema = typeof property.additionalProperties === 'object' 
-    && '$ref' in property.additionalProperties
-    && property.additionalProperties.$ref != undefined
+
+    const additionalPropSchema = typeof property.additionalProperties === 'object'
+      && '$ref' in property.additionalProperties
+      && property.additionalProperties.$ref != undefined
       ? resolveRef(property.additionalProperties.$ref, schema)
       : (property.additionalProperties as JsonSchemaProperty | undefined);
 
-    const additionalPropName = typeof property.additionalProperties === 'object' 
-      && '$ref' in property.additionalProperties 
+    const additionalPropName = typeof property.additionalProperties === 'object'
+      && '$ref' in property.additionalProperties
       && property.additionalProperties.$ref != undefined
       ? getPropertyName(property.additionalProperties.$ref) : "property"
 
@@ -35,7 +35,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
       <div className="object-field pl-8 pt-2 hover:bg-gray-100">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
-        
+
         {/* Render defined properties */}
         {property.properties && Object.entries(property.properties).map(([subName, subProperty]) => (
           <FormField
@@ -50,7 +50,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
             schema={schema}
           />
         ))}
-        
+
         {/* Render existing additional properties */}
         {additionalPropSchema && Object.entries(objectValue).map(([subName, subValue]) => {
           if (!property.properties || !(subName in property.properties)) {
@@ -70,7 +70,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
           }
           return null;
         })}
-        
+
         {/* Add new additional property */}
         {additionalPropSchema && (
           <div>
@@ -81,18 +81,18 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
               value={additionalFieldName}
               onChange={(e) => setAdditionalFieldName(e.target.value)}
             />
-            <button 
+            <button
               className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
               onClick={() => {
                 if (additionalFieldName) {
-                  const newValue: ObjectValue = { 
-                    ...objectValue, 
+                  const newValue: ObjectValue = {
+                    ...objectValue,
                     [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
                   };
                   onChange(name, newValue);
                   setAdditionalFieldName('');
                 }
-            }}>Add Field</button>
+              }}>Add Field</button>
           </div>
         )}
       </div>
@@ -103,15 +103,15 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
     if (property.items.enum != undefined) {
       return (
         <div className="form-field pl-8 pt-2">
-        <label htmlFor={name}>{property.title || name}</label>
-        {property.description && <p className="field-description">{property.description}</p>}
-          <SelectField 
-          name={name}
-          value={property.items.enum}
-          onChange={()=>{}}
-          propertyEnum={property.items.enum}
-          multipleSelect={true}
-        />
+          <label htmlFor={name}>{property.title || name}</label>
+          {property.description && <p className="field-description">{property.description}</p>}
+          <SelectField
+            name={name}
+            value={property.items.enum}
+            onChange={() => { }}
+            propertyEnum={property.items.enum}
+            multipleSelect={true}
+          />
         </div>
       )
     }
@@ -119,17 +119,17 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
       // const items = resolveRef(property.items.$ref);
       return (
         <div className="form-field pl-8 pt-2">
-                    <button 
-              className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
-              onClick={() => {
-                if (additionalFieldName) {
-                  const newValue: ObjectValue = { 
-                    ...objectValue, 
-                    [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
-                  };
-                  onChange(name, newValue);
-                  setAdditionalFieldName('');
-                }
+          <button
+            className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
+            onClick={() => {
+              if (additionalFieldName) {
+                const newValue: ObjectValue = {
+                  ...objectValue,
+                  [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
+                };
+                onChange(name, newValue);
+                setAdditionalFieldName('');
+              }
             }}>Add {property.title || name}</button>
         </div>
       )
@@ -140,26 +140,42 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
     onChange(name, e.target.value);
   };
 
+  if (name.endsWith("additionalProperties")) {
+    return;
+  }
+
+  let propertyData = property;
+
+  if (property.$ref != undefined) {
+    propertyData = resolveRef(property.$ref, schema);
+  }
+
+  const placeHolder = propertyData.pattern != undefined ? propertyData.pattern : `${propertyData.type} value`;
+
   return (
-    <div className="form-field pl-8 pt-2">
-      <label htmlFor={name}>{property.title || name}</label>
-      {property.description && <p className="field-description">{property.description}</p>}
-      {property.enum ? (
-        <SelectField 
+    <div className="form-field pl-8 pt-2  hover:bg-amber-100">
+      <label htmlFor={name}>{propertyData.title || name}</label>
+      {propertyData.description && <p className="field-description">{propertyData.description}</p>}
+      <span className='pl-2'>
+      {propertyData.enum ? (
+        <SelectField
           name={name}
           value={value}
           onChange={handleChange}
-          propertyEnum={property.enum}
+          propertyEnum={propertyData.enum}
           multipleSelect={false}
         />
-      ) : 
-        <TextField 
+      ) :
+        <InputField
           name={name}
           value={value}
+          type={propertyData.type == "boolean" ? "checkbox" : "text"}
           onChange={handleChange}
-          pattern={property.pattern}
+          pattern={propertyData.pattern}
+          placeHolder={placeHolder}
         />
       }
+      </span>
     </div>
   );
 }
