@@ -77,7 +77,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
             <input
               className="m-4 p-1 border-1 border-gray-300 rounded-sm"
               type="text"
-              placeholder={`New ${additionalPropName}`}
+              placeholder={`New ${additionalPropName} name`}
               value={additionalFieldName}
               onChange={(e) => setAdditionalFieldName(e.target.value)}
             />
@@ -92,7 +92,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
                   onChange(name, newValue);
                   setAdditionalFieldName('');
                 }
-              }}>Add Field</button>
+              }}>Add Group</button>
           </div>
         )}
       </div>
@@ -102,7 +102,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
   if (property.type === 'array' && property.items != undefined) {
     if (property.items.enum != undefined) {
       return (
-        <div className="form-field pl-8 pt-2">
+        <div className="form-field ml-8 pl-1 pt-2 border-8 border-transparent hover:border-l-amber-300">
           <label htmlFor={name}>{property.title || name}</label>
           {property.description && <p className="field-description">{property.description}</p>}
           <SelectField
@@ -153,7 +153,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
   const placeHolder = propertyData.pattern != undefined ? propertyData.pattern : `${propertyData.type} value`;
 
   return (
-    <div className="form-field pl-8 pt-2  hover:bg-amber-100">
+    <div className="form-field ml-8 pl-1 pt-2 border-8 border-transparent hover:border-l-amber-300">
       <label htmlFor={name}>{propertyData.title || name}</label>
       {propertyData.description && <p className="field-description">{propertyData.description}</p>}
       <span className='pl-2'>

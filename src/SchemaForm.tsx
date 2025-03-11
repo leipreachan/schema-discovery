@@ -10,8 +10,32 @@ interface SchemaFormProps {
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
 
+  const chop = (obj) => {
+    const keyBlacklist = ['_id', '__v'];
+
+    const res = JSON.stringify(obj, function chopChop(key, value) {
+      if (keyBlacklist.indexOf(key) > -1) {
+        return undefined;
+      }
+
+      // this here checks against the array, but also for undefined
+      // and empty array as value
+      if (value === null || value === undefined || value.length <= 0) {
+        return undefined;
+      }
+      return value;
+    })
+    return res != undefined ? JSON.parse(res) : "";
+  }
+
   const handleChange = (name: string, value: string | number) => {
-    setFormData({ ...formData, [name]: value });
+    value = chop(value);
+    if (`${value}`.length <= 0 || `${value}` == '{}') {
+      delete formData[name];
+      setFormData({...formData});
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -20,19 +44,26 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='pl-8'>
-      {Object.entries(schema.properties).map(([name, property]) => (
-        <FormField
-          key={name}
-          name={name}
-          property={property}
-          value={formData[name] || ''}
-          onChange={handleChange}
-          schema={schema}
-        />
-      ))}
-      {/* <button type="submit">Submit</button> */}
-    </form>
+    <div className="grid grid-cols-2">
+      <div>
+        <form onSubmit={handleSubmit} className='pl-8'>
+          {Object.entries(schema.properties).map(([name, property]) => (
+            <FormField
+              key={name}
+              name={name}
+              property={property}
+              value={formData[name] || ''}
+              onChange={handleChange}
+              schema={schema}
+            />
+          ))}
+          {/* <button type="submit">Submit</button> */}
+        </form>
+      </div>
+      <div className='pl-2'>
+        <textarea className='w-5/6 h-2/6 border-1 border-gray-300' value={JSON.stringify(formData, null, 3)} />
+      </div>
+    </div>
   );
 }
 
