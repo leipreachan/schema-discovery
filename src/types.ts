@@ -14,7 +14,8 @@ export interface ObjectValue {
   [key: string]: FormValue;
 }
 
-export type FormValue = PrimitiveValue | ObjectValue;
+
+export type FormValue = PrimitiveValue | ObjectValue | Array<string>;
 
 export interface Items {
   type: string;

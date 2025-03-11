@@ -28,8 +28,9 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     return res != undefined ? JSON.parse(res) : "";
   }
 
-  const handleChange = (name: string, value: string | number) => {
+  const handleChange = (name: string, value: string | number | Array) => {
     value = chop(value);
+    console.log(value);
     if (`${value}`.length <= 0 || `${value}` == '{}') {
       delete formData[name];
       setFormData({...formData});
@@ -45,8 +46,8 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
 
   return (
     <div className="grid grid-cols-2">
-      <div>
-        <form onSubmit={handleSubmit} className='pl-8'>
+      <div className='col-span-1'>
+        <form onSubmit={handleSubmit}>
           {Object.entries(schema.properties).map(([name, property]) => (
             <FormField
               key={name}
@@ -60,8 +61,8 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           {/* <button type="submit">Submit</button> */}
         </form>
       </div>
-      <div className='pl-2'>
-        <textarea className='w-5/6 h-2/6 border-1 border-gray-300' value={JSON.stringify(formData, null, 3)} />
+      <div className='sticky h-screen pl-2 pr-3 top-0 col-span-1'>
+        <textarea className='w-full border-1 h-full p-2 border-gray-300' value={JSON.stringify(formData, null, 3)} />
       </div>
     </div>
   );

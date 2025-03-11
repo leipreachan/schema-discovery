@@ -99,84 +99,84 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
     );
   }
 
-  if (property.type === 'array' && property.items != undefined) {
-    if (property.items.enum != undefined) {
-      return (
-        <div className="form-field ml-8 pl-1 pt-2 border-8 border-transparent hover:border-l-amber-300">
-          <label htmlFor={name}>{property.title || name}</label>
-          {property.description && <p className="field-description">{property.description}</p>}
-          <SelectField
-            name={name}
-            value={property.items.enum}
-            onChange={() => { }}
-            propertyEnum={property.items.enum}
-            multipleSelect={true}
-          />
-        </div>
-      )
-    }
-    if (property.items.$ref != undefined) {
-      // const items = resolveRef(property.items.$ref);
-      return (
-        <div className="form-field pl-8 pt-2">
-          <button
-            className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
-            onClick={() => {
-              if (additionalFieldName) {
-                const newValue: ObjectValue = {
-                  ...objectValue,
-                  [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
-                };
-                onChange(name, newValue);
-                setAdditionalFieldName('');
-              }
-            }}>Add {property.title || name}</button>
-        </div>
-      )
-    }
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    onChange(name, e.target.value);
+    console.log(e.target.tagName);
+    if (e.target.tagName == "SELECT") {
+      onChange(name, Array.from(e.target?.selectedOptions).map((item) => item.value));
+    } else {
+      switch (e.target.type) {
+        case "checkbox": {
+          onChange(name, e.target.checked);
+          break;
+        }
+        case "radio": {
+          onChange(name, e.target.value == "null" ? "" : e.target.value);
+          break;
+        }
+        case "text": {
+          onChange(name, e.target.value);
+        }
+      }
+    }
   };
+
+  if (property.type === 'array' && property?.items?.$ref != undefined) {
+    // const items = resolveRef(property.items.$ref);
+    return (
+      <div className="form-field pl-8 pt-2">
+        <button
+          className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
+          onClick={() => {
+            if (additionalFieldName) {
+              const newValue: ObjectValue = {
+                ...objectValue,
+                [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
+              };
+              onChange(name, newValue);
+              setAdditionalFieldName('');
+            }
+          }}>Add {property.title || name}</button>
+      </div>
+    )
+  }
 
   if (name.endsWith("additionalProperties")) {
     return;
   }
 
-  let propertyData = property;
+  const propertyData = property.$ref != undefined ? resolveRef(property.$ref, schema) : property;
 
-  if (property.$ref != undefined) {
-    propertyData = resolveRef(property.$ref, schema);
-  }
-
-  const placeHolder = propertyData.pattern != undefined ? propertyData.pattern : `${propertyData.type} value`;
+  const placeHolder = propertyData?.pattern || `${propertyData?.type} value`;
 
   return (
-    <div className="form-field ml-8 pl-1 pt-2 border-8 border-transparent hover:border-l-amber-300">
-      <label htmlFor={name}>{propertyData.title || name}</label>
-      {propertyData.description && <p className="field-description">{propertyData.description}</p>}
-      <span className='pl-2'>
-      {propertyData.enum ? (
-        <SelectField
-          name={name}
-          value={value}
-          onChange={handleChange}
-          propertyEnum={propertyData.enum}
-          multipleSelect={false}
-        />
-      ) :
-        <InputField
-          name={name}
-          value={value}
-          type={propertyData.type == "boolean" ? "checkbox" : "text"}
-          onChange={handleChange}
-          pattern={propertyData.pattern}
-          placeHolder={placeHolder}
-        />
-      }
-      </span>
-    </div>
+    <div className="form-field ml-4 pl-4 pt-2 border-4 border-transparent hover:border-l-amber-300 hover:border-b-amber-300 grid grid-cols-2">
+      <div>
+        <label htmlFor={name}>
+          {propertyData?.title || name}
+          {propertyData?.description && <p className="field-description">{propertyData?.description}</p>}
+        </label>
+      </div>
+      <div className='pl-2'>
+        {(propertyData?.enum || property?.items?.enum) ? (
+          <SelectField
+            name={name}
+            value={value}
+            onChange={handleChange}
+            propertyEnum={propertyData?.enum || property?.items?.enum}
+            multipleSelect={property?.items?.enum != undefined}
+          />
+        ) :
+          <InputField
+            name={name}
+            value={value}
+            type={propertyData?.type == "boolean" ? "radio" : "text"}
+            onChange={handleChange}
+            pattern={propertyData?.pattern}
+            placeHolder={placeHolder}
+          />
+        }
+      </div>
+    </div >
   );
 }
 
