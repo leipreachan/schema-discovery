@@ -2,12 +2,12 @@ const SelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyE
     return (
         <select
           className="m-1 p-1 border-1 border-gray-300 rounded-sm"
-          multiple={multipleSelect}
           id={name} 
-          value={multipleSelect ? null : value }
+          value={multipleSelect ? (value || []) : value }
           onChange={onChange}
+          multiple={multipleSelect}
         >
-          {propertyEnum.map((option) => (
+          {propertyEnum.map((option: string) => (
             <option key={option} value={option}>{option}</option>
           ))}
       </select>

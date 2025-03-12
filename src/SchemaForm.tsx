@@ -30,7 +30,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
 
   const handleChange = (name: string, value: string | number | Array) => {
     value = chop(value);
-    console.log(value);
+    // console.log(value);
     if (`${value}`.length <= 0 || `${value}` == '{}') {
       delete formData[name];
       setFormData({...formData});
@@ -38,6 +38,16 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+  const handleTextChange = (e) => {
+    const newValue = e.target.value;
+    try {
+      const newState = JSON.parse(newValue);
+      setFormData(newState);
+    } finally {
+      // console.log(newValue);
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +72,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
         </form>
       </div>
       <div className='sticky h-screen pl-2 pr-3 top-0 col-span-1'>
-        <textarea className='w-full border-1 h-full p-2 border-gray-300' value={JSON.stringify(formData, null, 3)} />
+        <textarea className='w-full border-1 h-full p-2 border-gray-300' value={JSON.stringify(formData, null, 3)} onChange={handleTextChange}/>
       </div>
     </div>
   );

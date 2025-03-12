@@ -5,7 +5,7 @@ import { JsonSchema } from './types';
 const App: React.FC = () => {
   const [schema, setSchema] = useState<JsonSchema | null>(null);
 
-  const schemaPath = `/public/schema/${import.meta.env.VITE_SCHEMA_NAME}`;
+  const schemaPath = `/schema/${import.meta.env.VITE_SCHEMA_NAME}`;
   useEffect(() => {
     fetch(schemaPath)
       .then(response => response.json())
