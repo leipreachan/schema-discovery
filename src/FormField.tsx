@@ -100,7 +100,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    // console.log(e.target.tagName);
+    console.log(e);
     if (e.target.tagName == "SELECT") {
       onChange(name, Array.from(e.target?.selectedOptions).map((item) => item.value));
     } else {
@@ -183,7 +183,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
           <InputField
             name={name}
             value={value}
-            type={propertyData?.type == "boolean" ? "radio" : "text"}
+            type={propertyData?.type}
             onChange={handleChange}
             pattern={propertyData?.pattern}
             placeHolder={placeHolder}

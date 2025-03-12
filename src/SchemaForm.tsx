@@ -11,7 +11,6 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
   const [textFieldData, setTextFieldData] = useState<string>("{}");
 
-
   function removeEmptyNodes(obj: object): object|null {
     if (typeof obj === 'object' && obj !== null) {
         // Recursively process child nodes
@@ -31,9 +30,12 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
 }
 
   const handleChange = (name: string, value: string | number | Array) => {
-    const newValue = removeEmptyNodes({ ...formData, [name]: value });
-    setFormData(newValue as FormData);
-    setTextFieldData(JSON.stringify(newValue, null, 4));
+    const whiteListedKeys = ["agents", "scenarios"];
+    const newValue = { ...formData, [name]: value };
+    const cleanedValue = whiteListedKeys.includes(name) ? newValue : removeEmptyNodes(newValue);
+    // const cleanedValue = removeEmptyNodes({ ...formData, [name]: value });
+    setFormData(cleanedValue as FormData);
+    setTextFieldData(JSON.stringify(cleanedValue, null, 4));
   };
 
   const handleTextChange = (e) => {
