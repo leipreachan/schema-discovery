@@ -148,12 +148,26 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
 
   const placeHolder = propertyData?.pattern || `${propertyData?.type} value`;
 
+
+  const breakLongTitle = (title: string) => {
+    const wbr = (<wbr />);
+
+    return (
+      <span>
+        {
+        title.split(".")
+          .reduce((acc, x) => acc === null ? [x] : [acc, ".", wbr, x], null)
+          }
+      </span>
+    )
+  };
+
   return (
     <div className="form-field ml-4 pl-4 pt-2 border-4 border-transparent hover:border-l-amber-300 hover:border-b-amber-300 grid grid-cols-2">
-      <div>
+      <div className='break-words'>
         <label htmlFor={name}>
-          {propertyData?.title || name}
-          {propertyData?.description && <p className="field-description">{propertyData?.description}</p>}
+          {breakLongTitle(propertyData?.title || name)}
+          <span>{propertyData?.description && <p className="field-description">{propertyData?.description}</p>}</span>
         </label>
       </div>
       <div className='pl-2'>

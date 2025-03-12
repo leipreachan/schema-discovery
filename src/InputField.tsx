@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type = "text", placeHolder = "" }) => {
     if (type == "radio") {
@@ -23,7 +23,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
     } else {
         return (
             <input
-                className="m-1 p-1 border-1 border-gray-300 rounded-sm"
+                className={"m-1 p-1 border-1 border-gray-300 rounded-sm " + (value  ? "bg-amber-100" : "")}
                 type={type}
                 id={name}
                 value={value}
