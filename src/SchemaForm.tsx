@@ -9,43 +9,41 @@ interface SchemaFormProps {
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
+  const [textFieldData, setTextFieldData] = useState<string>("{}");
 
-  const chop = (obj) => {
-    const keyBlacklist = ['_id', '__v'];
 
-    const res = JSON.stringify(obj, function chopChop(key, value) {
-      if (keyBlacklist.indexOf(key) > -1) {
-        return undefined;
-      }
-
-      // this here checks against the array, but also for undefined
-      // and empty array as value
-      if (value === null || value === undefined || value.length <= 0) {
-        return undefined;
-      }
-      return value;
-    })
-    return res != undefined ? JSON.parse(res) : "";
-  }
+  function removeEmptyNodes(obj: object): object|null {
+    if (typeof obj === 'object' && obj !== null) {
+        // Recursively process child nodes
+        for (const key in obj) {
+            obj[key] = removeEmptyNodes(obj[key]);
+            // Remove keys with empty objects or arrays
+            if (obj[key] == null || obj[key].length <=0 ||(typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
+                delete obj[key];
+            }
+        }
+        // If the object is empty after processing, return null
+        if (Object.keys(obj).length === 0) {
+            return null;
+        }
+    }
+    return obj;
+}
 
   const handleChange = (name: string, value: string | number | Array) => {
-    value = chop(value);
-    // console.log(value);
-    if (`${value}`.length <= 0 || `${value}` == '{}') {
-      delete formData[name];
-      setFormData({...formData});
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const newValue = removeEmptyNodes({ ...formData, [name]: value });
+    setFormData(newValue as FormData);
+    setTextFieldData(JSON.stringify(newValue, null, 4));
   };
 
   const handleTextChange = (e) => {
     const newValue = e.target.value;
+    setTextFieldData(newValue);
     try {
       const newState = JSON.parse(newValue);
       setFormData(newState);
     } finally {
-      // console.log(newValue);
+      //
     }
   }
 
@@ -72,7 +70,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
         </form>
       </div>
       <div className='sticky h-screen pl-2 pr-3 top-0 col-span-1'>
-        <textarea className='w-full border-1 h-full p-2 border-gray-300' value={JSON.stringify(formData, null, 3)} onChange={handleTextChange}/>
+        <textarea className='w-full border-1 h-full p-2 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
       </div>
     </div>
   );

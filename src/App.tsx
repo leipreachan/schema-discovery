@@ -11,7 +11,7 @@ const App: React.FC = () => {
       .then(response => response.json())
       .then((data: JsonSchema) => setSchema(data))
       .catch(error => console.error('Error loading schema:', error));
-  }, []);
+  }, [schemaPath]);
 
   return (
     <div className="App">
