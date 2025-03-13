@@ -45,6 +45,7 @@ export interface FormData {
 }
 
 export interface FormFieldProps {
+  title: string|null;
   name: string;
   property: JsonSchemaProperty;
   value: FormValue;

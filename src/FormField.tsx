@@ -4,7 +4,7 @@ import SelectField from './SelectField';
 import { resolveRef, getPropertyName } from './utils';
 import InputField from './InputField';
 
-const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, schema }) => {
+const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
 
   // only object with properties
@@ -32,6 +32,7 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
         {property.properties && Object.entries(property.properties).map(([subName, subProperty]) => (
           <FormField
             key={subName}
+            title={`${name}.${subName}`}
             name={`${name}.${subName}`}
             property={subProperty}
             value={(objectValue[subName] || objectValue[subName] === false) ? objectValue[subName] : ''}
@@ -49,6 +50,7 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
             return (
               <FormField
                 key={subName}
+                title={`${name}.${subName}`}
                 name={`${name}.${subName}`}
                 property={additionalPropSchema}
                 value={subValue}
@@ -106,7 +108,7 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
           break;
         }
         case "text": {
-          onChange(name, e.target.value);
+          onChange(name, e.target.value || "");
         }
       }
     }
@@ -138,7 +140,7 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
 
   const propertyData = property.$ref != undefined ? resolveRef(property.$ref, schema) : property;
 
-  const placeHolder = propertyData?.pattern || `${propertyData?.type} value`;
+  const placeHolder = propertyData?.pattern || propertyData?.type || "";
 
 
   const breakLongTitle = (title: string) => {
@@ -157,10 +159,10 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
   return (
     <div className="form-field pt grid grid-cols-2 pt-1 pb-1 hover:bg-amber-50">
       {
-        name && (
+        title && (
           <div className='break-words'>
             <label htmlFor={name}>
-              {breakLongTitle(propertyData?.title || name)}
+              {breakLongTitle(propertyData?.title || title)}
               <span>{propertyData?.description && <p className="field-description">{propertyData?.description}</p>}</span>
             </label>
           </div>

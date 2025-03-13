@@ -20,7 +20,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
             // Remove keys with empty objects or arrays
             if (obj[key] === "null" 
               || obj[key] === null 
-              || obj[key].length <=0
+              || (Array.isArray(obj[key]) && obj[key].length <=0)
               || (andNodesToo && typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
              ) {
                 delete obj[key];
@@ -34,34 +34,9 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     return obj;
 }
 
-  function removeEmptyNodes(obj: object): object|null {
-    if (typeof obj === 'object' && obj !== null) {
-        // Recursively process child nodes
-        for (const key in obj) {
-            obj[key] = removeEmptyNodes(obj[key]);
-            // Remove keys with empty objects or arrays
-            if (obj[key] === false) {
-              continue;
-            }
-            if (obj[key] === "null" 
-              || obj[key] === null 
-              || obj[key].length <=0 
-              ||(typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
-                delete obj[key];
-            }
-        }
-        // If the object is empty after processing, return null
-        if (Object.keys(obj).length === 0) {
-            return null;
-        }
-    }
-    return obj;
-}
-
   const handleChange = (name: string, value: string | number | boolean | Array) => {
     const whiteListedKeys = ["agents", "scenarios"];
     const newValue = { ...formData, [name]: value };
-    console.log(name, newValue);
     const cleanedValue = removeEmptyValues(newValue, whiteListedKeys.includes(name)) || {};
     // const cleanedValue = removeEmptyNodes({ ...formData, [name]: value });
     setFormData(cleanedValue as FormData);
@@ -86,11 +61,12 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
 
   return (
     <div className="grid grid-cols-2 h-screen">
-      <div className='col-span-1 h-screen overflow-y-scroll'>
+      <div className='col-span-1 h-screen overflow-y-scroll p-1 pl-4'>
         <form onSubmit={handleSubmit}>
           {Object.entries(schema.properties).map(([name, property]) => (
             <FormField
               key={name}
+              title={name}
               name={name}
               property={property}
               value={(formData[name] || formData[name] == false) ? formData[name] : ''}
@@ -101,9 +77,9 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           {/* <button type="submit">Submit</button> */}
         </form>
       </div>
-      <div className='p-3 top-0 col-span-1'>
+      <div className='top-0 col-span-1 p-1'>
         <div className={errMessage?.length > 0 ? "bg-red-100": "bg-white-100"}>{errMessage}</div>
-        <textarea className='w-full h-screen border-1 p-2 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
+        <textarea className='w-full h-screen border-1 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
       </div>
     </div>
   );
