@@ -85,8 +85,8 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   };
 
   return (
-    <div className="grid grid-cols-2">
-      <div className='col-span-1'>
+    <div className="grid grid-cols-2 h-screen">
+      <div className='col-span-1 h-screen overflow-y-scroll'>
         <form onSubmit={handleSubmit}>
           {Object.entries(schema.properties).map(([name, property]) => (
             <FormField
@@ -101,9 +101,9 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           {/* <button type="submit">Submit</button> */}
         </form>
       </div>
-      <div className='sticky h-screen p-3 top-0 col-span-1'>
+      <div className='p-3 top-0 col-span-1'>
         <div className={errMessage?.length > 0 ? "bg-red-100": "bg-white-100"}>{errMessage}</div>
-        <textarea className='w-full border-1 h-full p-2 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
+        <textarea className='w-full h-screen border-1 p-2 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
       </div>
     </div>
   );
