@@ -41,5 +41,13 @@ export interface JsonSchemaProperty {
 }
 
 export interface FormData {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
+}
+
+export interface FormFieldProps {
+  name: string;
+  property: JsonSchemaProperty;
+  value: FormValue;
+  onChange: (name: string, value: FormValue) => void;
+  schema: JsonSchema; // Pass the full schema to access definitions
 }

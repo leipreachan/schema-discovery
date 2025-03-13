@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
-import { JsonSchema, JsonSchemaProperty, FormValue, ObjectValue } from './types';
+import { FormFieldProps, JsonSchemaProperty, ObjectValue } from './types';
 import SelectField from './SelectField';
 import { resolveRef, getPropertyName } from './utils';
 import InputField from './InputField';
 
-interface FormFieldProps {
-  name: string;
-  property: JsonSchemaProperty;
-  value: FormValue;
-  onChange: (name: string, value: FormValue) => void;
-  schema: JsonSchema; // Pass the full schema to access definitions
-}
-
-const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, schema }) => {
+const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
 
   // only object with properties
@@ -42,7 +34,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
             key={subName}
             name={`${name}.${subName}`}
             property={subProperty}
-            value={objectValue[subName] || ''}
+            value={(objectValue[subName] || objectValue[subName] === false) ? objectValue[subName] : ''}
             onChange={(subFieldName, subValue) => {
               const newValue: ObjectValue = { ...objectValue, [subName]: subValue };
               onChange(name, newValue);
@@ -100,9 +92,9 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    console.log(e);
     if (e.target.tagName == "SELECT") {
-      onChange(name, Array.from(e.target?.selectedOptions).map((item) => item.value));
+      const selected = Array.from(e.target?.selectedOptions).map((item) => item.value);
+      onChange(name, e.target.multiple ? selected : selected[0]);
     } else {
       switch (e.target.type) {
         case "checkbox": {
@@ -110,7 +102,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
           break;
         }
         case "radio": {
-          onChange(name, e.target.value == "null" ? "" : e.target.value);
+          onChange(name, JSON.parse(e.target.value));
           break;
         }
         case "text": {
@@ -120,7 +112,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, property, value, onChange, 
     }
   };
 
-  if (property.type === 'array' && property?.items?.$ref != undefined) {
+  if (property?.type === 'array' && property?.items?.$ref != undefined) {
     // const items = resolveRef(property.items.$ref);
     return (
       <div className="form-field pl-8 pt-2">

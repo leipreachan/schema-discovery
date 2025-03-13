@@ -10,6 +10,29 @@ interface SchemaFormProps {
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
   const [textFieldData, setTextFieldData] = useState<string>("{}");
+  const [errMessage, setErrMessage] = useState<string>("");
+
+  function removeEmptyValues(obj: object, andNodesToo: boolean = false): object|null {
+    if (typeof obj === 'object' && obj !== null) {
+        // Recursively process child nodes
+        for (const key in obj) {
+            obj[key] = removeEmptyValues(obj[key]);
+            // Remove keys with empty objects or arrays
+            if (obj[key] === "null" 
+              || obj[key] === null 
+              || obj[key].length <=0
+              || (andNodesToo && typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
+             ) {
+                delete obj[key];
+            }
+        }
+        // If the object is empty after processing, return null
+        if (andNodesToo && Object.keys(obj).length === 0) {
+            return null;
+        }
+    }
+    return obj;
+}
 
   function removeEmptyNodes(obj: object): object|null {
     if (typeof obj === 'object' && obj !== null) {
@@ -17,7 +40,13 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
         for (const key in obj) {
             obj[key] = removeEmptyNodes(obj[key]);
             // Remove keys with empty objects or arrays
-            if (obj[key] == null || obj[key].length <=0 ||(typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
+            if (obj[key] === false) {
+              continue;
+            }
+            if (obj[key] === "null" 
+              || obj[key] === null 
+              || obj[key].length <=0 
+              ||(typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
                 delete obj[key];
             }
         }
@@ -29,10 +58,11 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     return obj;
 }
 
-  const handleChange = (name: string, value: string | number | Array) => {
+  const handleChange = (name: string, value: string | number | boolean | Array) => {
     const whiteListedKeys = ["agents", "scenarios"];
     const newValue = { ...formData, [name]: value };
-    const cleanedValue = whiteListedKeys.includes(name) ? newValue : removeEmptyNodes(newValue);
+    console.log(name, newValue);
+    const cleanedValue = removeEmptyValues(newValue, whiteListedKeys.includes(name)) || {};
     // const cleanedValue = removeEmptyNodes({ ...formData, [name]: value });
     setFormData(cleanedValue as FormData);
     setTextFieldData(JSON.stringify(cleanedValue, null, 4));
@@ -41,11 +71,11 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const handleTextChange = (e) => {
     const newValue = e.target.value;
     setTextFieldData(newValue);
+    setErrMessage("");
     try {
-      const newState = JSON.parse(newValue);
-      setFormData(newState);
-    } finally {
-      //
+      setFormData(JSON.parse(newValue));
+    } catch (e) {
+      setErrMessage(`${e}`);
     }
   }
 
@@ -63,7 +93,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
               key={name}
               name={name}
               property={property}
-              value={formData[name] || ''}
+              value={(formData[name] || formData[name] == false) ? formData[name] : ''}
               onChange={handleChange}
               schema={schema}
             />
@@ -71,7 +101,8 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           {/* <button type="submit">Submit</button> */}
         </form>
       </div>
-      <div className='sticky h-screen pl-2 pr-3 top-0 col-span-1'>
+      <div className='sticky h-screen p-3 top-0 col-span-1'>
+        <div className={errMessage?.length > 0 ? "bg-red-100": "bg-white-100"}>{errMessage}</div>
         <textarea className='w-full border-1 h-full p-2 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
       </div>
     </div>
