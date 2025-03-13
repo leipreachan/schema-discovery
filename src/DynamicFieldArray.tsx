@@ -1,4 +1,5 @@
 import { useState } from "react";
+import FormField from "./FormField";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({name, value, onChange}) => {
   const [fields, setFields] = useState(value);
@@ -34,12 +35,13 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({name, value, onChange}) =>
     <span>
       {fields.length > 0 && fields.map((field, index) => (
         <div key={index} className="flex items-center mb-2">
-          <input
-            type="text"
+          <FormField
+            key={index}
+            name={""}
             value={field}
             onChange={(event) => handleChange(index, event)}
-            className={"m-1 p-1 border-1 border-gray-300 rounded-sm " + (value  ? "bg-amber-100" : "")}
-            placeholder={`Field ${index + 1}`}
+            property={field}
+            schema={field}
           />
           <button
             type="button"

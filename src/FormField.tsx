@@ -65,7 +65,7 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
 
         {/* Add new additional property */}
         {additionalPropSchema && (
-          <div>
+          <div className='pl-8'>
             <input
               className="m-4 p-1 border-1 border-gray-300 rounded-sm"
               type="text"
@@ -84,7 +84,7 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
                   onChange(name, newValue);
                   setAdditionalFieldName('');
                 }
-              }}>Add Group</button>
+              }}>Add new {additionalPropName}</button>
           </div>
         )}
       </div>
@@ -155,14 +155,18 @@ const FormField: React.FC<FormFieldProps> = ({name, property, value, onChange, s
   };
 
   return (
-    <div className="form-field ml-4 pl-4 pt-2 border-4 border-transparent hover:border-l-amber-300 hover:border-b-amber-300 grid grid-cols-2">
-      <div className='break-words'>
-        <label htmlFor={name}>
-          {breakLongTitle(propertyData?.title || name)}
-          <span>{propertyData?.description && <p className="field-description">{propertyData?.description}</p>}</span>
-        </label>
-      </div>
-      <div className='pl-2'>
+    <div className="form-field pt grid grid-cols-2 pt-1 pb-1 hover:bg-amber-50">
+      {
+        name && (
+          <div className='break-words'>
+            <label htmlFor={name}>
+              {breakLongTitle(propertyData?.title || name)}
+              <span>{propertyData?.description && <p className="field-description">{propertyData?.description}</p>}</span>
+            </label>
+          </div>
+        )
+      }
+      <div>
         {(propertyData?.enum || property?.items?.enum) ? (
           <SelectField
             name={name}
