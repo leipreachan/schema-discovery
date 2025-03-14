@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FormField from "./FormField";
+import { FormFieldProps } from "./types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
   const [fields, setFields] = useState(value);

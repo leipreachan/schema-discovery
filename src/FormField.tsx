@@ -115,20 +115,17 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
   };
 
   if (property?.type === 'array' && property?.items?.$ref != undefined) {
-    // const items = resolveRef(property.items.$ref);
+    // const items = resolveRef(property?.items?.$ref, schema);
     return (
       <div className="form-field pl-8 pt-2">
         <button
           className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
           onClick={() => {
-            if (additionalFieldName) {
-              const newValue: ObjectValue = {
-                ...objectValue,
-                [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
-              };
-              onChange(name, newValue);
-              setAdditionalFieldName('');
-            }
+              // const newValue = {
+              //   ...value,
+              //   items
+              // };
+              // onChange(additionalFieldName, [newValue]);
           }}>Add {property.title || name}</button>
       </div>
     )
