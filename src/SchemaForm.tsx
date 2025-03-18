@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import FormField from './FormField';
 import { JsonSchema, FormData } from './types';
+import { Textarea } from './components/ui/textarea';
+import { Separator } from './components/ui/separator';
 
 interface SchemaFormProps {
   schema: JsonSchema;
@@ -76,10 +78,11 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           ))}
           {/* <button type="submit">Submit</button> */}
         </form>
+        <Separator orientation="vertical" />
       </div>
       <div className='top-0 col-span-1 p-1'>
         <div className={errMessage?.length > 0 ? "bg-red-100": "bg-white-100"}>{errMessage}</div>
-        <textarea className='w-full h-screen border-1 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
+        <Textarea className='w-full h-screen' value={textFieldData} onChange={handleTextChange}/>
       </div>
     </div>
   );

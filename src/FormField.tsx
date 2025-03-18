@@ -3,6 +3,8 @@ import { FormFieldProps, JsonSchemaProperty, ObjectValue } from './types';
 import SelectField from './SelectField';
 import { resolveRef, getPropertyName } from './utils';
 import InputField from './InputField';
+import { Button } from './components/ui/button';
+import { Input } from './components/ui/input';
 
 const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
@@ -68,15 +70,13 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
         {/* Add new additional property */}
         {additionalPropSchema && (
           <div className='pl-8'>
-            <input
-              className="m-4 p-1 border-1 border-gray-300 rounded-sm"
+            <Input
               type="text"
               placeholder={`New ${additionalPropName} name`}
               value={additionalFieldName}
               onChange={(e) => setAdditionalFieldName(e.target.value)}
             />
-            <button
-              className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
+            <Button
               onClick={() => {
                 if (additionalFieldName) {
                   const newValue: ObjectValue = {
@@ -86,7 +86,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
                   onChange(name, newValue);
                   setAdditionalFieldName('');
                 }
-              }}>Add new {additionalPropName}</button>
+              }}>Add new {additionalPropName}</Button>
           </div>
         )}
       </div>
@@ -118,8 +118,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
     // const items = resolveRef(property.items.$ref);
     return (
       <div className="form-field pl-8 pt-2">
-        <button
-          className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
+        <Button
           onClick={() => {
             if (additionalFieldName) {
               const newValue: ObjectValue = {
@@ -129,7 +128,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
               onChange(name, newValue);
               setAdditionalFieldName('');
             }
-          }}>Add {property.title || name}</button>
+          }}>Add {property.title || name}</Button>
       </div>
     )
   }
