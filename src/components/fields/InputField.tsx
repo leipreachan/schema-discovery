@@ -2,6 +2,7 @@ import React from 'react';
 import DynamicFieldArray from '@/components/fields/DynamicFieldArray';
 import { Input } from '@/components/ui/input';
 import { Label } from '../ui/label';
+import { FormFieldProps } from '@/types';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type = "text", placeHolder = "" }) => {
     if (type == "boolean") {
@@ -15,6 +16,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                 <Label key={`${name}_${itemValue}`}>
                     {itemValue}
                     <Input
+                        className='bg-white'
                         key={`${name}_${itemValue}`}
                         type={"radio"}
                         id={name}
@@ -35,7 +37,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
     } else {
         return (
             <Input
-                className={(value  ? "bg-amber-100" : "")}
+                className={"bg-white" + (value  ? "bg-amber-100" : "")}
                 type={"text"}
                 id={name}
                 value={typeof value == "object" ? JSON.stringify(value) : value}

@@ -76,6 +76,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
             <div className='pl-8 grid grid-cols-2 w-full justify-items-end'>
               <div className='w-full'>
                 <Input
+                className='bg-white'
                 type="text"
                 placeholder={`New ${additionalPropName} name`}
                 value={additionalFieldName}
@@ -83,6 +84,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
               /></div>
               <div>
               <Button
+                className="shadow-xs"
                 onClick={() => {
                   if (additionalFieldName) {
                     const newValue: ObjectValue = {
@@ -164,7 +166,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
   };
 
   return (
-    <div className="form-field pt grid grid-cols-2 pt-1 pb-1 hover:bg-amber-50">
+    <div className="form-field pt grid grid-cols-2 p-2 hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
       {
         title && (
           <div className='break-words'>
