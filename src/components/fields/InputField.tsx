@@ -1,6 +1,7 @@
 import React from 'react';
 import DynamicFieldArray from '@/components/fields/DynamicFieldArray';
 import { Input } from '@/components/ui/input';
+import { Label } from '../ui/label';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type = "text", placeHolder = "" }) => {
     if (type == "boolean") {
@@ -11,7 +12,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
         // }}
         return allowedValues.map((itemValue) =>
             <div key={`${name}_${itemValue}`} className={(value !== "" ? "bg-amber-100" : "")}>
-                <label key={`${name}_${itemValue}`}>
+                <Label key={`${name}_${itemValue}`}>
                     {itemValue}
                     <Input
                         key={`${name}_${itemValue}`}
@@ -24,7 +25,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                         placeholder={placeHolder}
                         checked={`${value}` == itemValue || (`${value}` == "" &&  itemValue== "null")}
                     />
-                </label>
+                </Label>
             </div>
         );
     } else if (type == "array" ) {

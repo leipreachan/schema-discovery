@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import SelectField from './SelectField';
 import { Separator } from '../ui/separator';
+import { Label } from '../ui/label';
 
 const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
@@ -167,10 +168,10 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
       {
         title && (
           <div className='break-words'>
-            <label htmlFor={name}>
+            <Label htmlFor={name}>
               {breakLongTitle(propertyData?.title || title)}
               <span>{propertyData?.description && <p className="field-description">{propertyData?.description}</p>}</span>
-            </label>
+            </Label>
           </div>
         )
       }
