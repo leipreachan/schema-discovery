@@ -5,18 +5,17 @@ import SimpleSelectField from "./SimpleSelectField";
 const SelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyEnum, multipleSelect}) => {
     return multipleSelect ? (
         <MultiSelectField
-          className={(value ? "bg-amber-100" : "")}
-          id={name} 
-          value={value || []}
-          onChange={onChange}
-          propertyEnum={propertyEnum}
+            name={name}
+            value={value || []}
+            onChange={onChange}
+            propertyEnum={propertyEnum}
           />
     ) : (
         <SimpleSelectField
-            className={(value ? "bg-amber-100" : "")}
-            id={name} 
+            name={name}
             value={value}
             onChange={onChange}
+            propertyEnum={propertyEnum}
         />
     ) 
 }

@@ -33,7 +33,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
         {/* Render defined properties */}
         {property.properties && Object.entries(property.properties).map(([subName, subProperty]) => (
           <FormField
-            key={subName}
+            key={`${name}.${subName}`}
             title={`${name}.${subName}`}
             name={`${name}.${subName}`}
             property={subProperty}
@@ -51,7 +51,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
           if (!property.properties || !(subName in property.properties)) {
             return (
               <FormField
-                key={subName}
+                key={`${name}.${subName}`}
                 title={`${name}.${subName}`}
                 name={`${name}.${subName}`}
                 property={additionalPropSchema}

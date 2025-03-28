@@ -1,21 +1,18 @@
-import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { FormFieldProps } from "@/types";
 
 const MultiSelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyEnum}) => {
     return (
-        <Select
-          className={(value ? "bg-amber-100" : "")}
+        <select
+          className={(value?.length > 0 ? "bg-amber-100" : "")}
           id={name} 
           value={value || []}
           onChange={onChange}
           multiple={true}
         >
-          <SelectContent>
           {propertyEnum.map((option: string) => (
-            <SelectItem key={option} value={option}>{option}</SelectItem>
+            <option key={option} value={option}>{option}</option>
           ))}
-          </SelectContent>
-      </Select>
+      </select>
     )
 }
 

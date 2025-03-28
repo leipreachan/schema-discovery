@@ -5,7 +5,7 @@ const SimpleSelectField: React.FC<FormFieldProps> = ({name, value, onChange, pro
         <Select
           className={(value ? "bg-amber-100" : "")}
           id={name} 
-          value={value}
+          defaulValue={value}
           onChange={onChange}
         >
           <SelectContent>
