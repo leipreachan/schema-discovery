@@ -1,4 +1,5 @@
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
+import { FormFieldProps } from "@/types";
 
 const MultiSelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyEnum}) => {
     return (

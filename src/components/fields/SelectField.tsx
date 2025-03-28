@@ -9,6 +9,7 @@ const SelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyE
           id={name} 
           value={value || []}
           onChange={onChange}
+          propertyEnum={propertyEnum}
           />
     ) : (
         <SimpleSelectField
