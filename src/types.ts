@@ -51,4 +51,6 @@ export interface FormFieldProps {
   value: FormValue;
   onChange: (name: string, value: FormValue) => void;
   schema: JsonSchema; // Pass the full schema to access definitions
+  multipleSelect?: boolean;
+  propertyEnum?: string[];
 }

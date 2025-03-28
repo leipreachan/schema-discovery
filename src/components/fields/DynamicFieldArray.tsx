@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FormField from "@/components/fields/FormField";
 import { Button } from "@/components/ui/button";
+import { FormFieldProps } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
   const [fields, setFields] = useState(value);
@@ -58,12 +59,9 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
           </Button>
         </div>
       ))}
-      <Button
-        type="button"
-        onClick={handleAdd}
-      >
-        Add value to array
-      </Button>
+        <Button type="button" onClick={handleAdd} >
+          Add value to array
+        </Button>
     </span>
   );
 }
