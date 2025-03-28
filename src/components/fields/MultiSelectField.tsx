@@ -1,4 +1,4 @@
-import { Select } from "./components/ui/select";
+import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 
 const SelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyEnum, multipleSelect}) => {
     return (
@@ -9,9 +9,11 @@ const SelectField: React.FC<FormFieldProps> = ({name, value, onChange, propertyE
           onChange={onChange}
           multiple={multipleSelect}
         >
+          <SelectContent>
           {propertyEnum.map((option: string) => (
-            <option key={option} value={option}>{option}</option>
+            <SelectItem key={option} value={option}>{option}</SelectItem>
           ))}
+          </SelectContent>
       </Select>
     )
 }

@@ -1,9 +1,9 @@
 // SchemaForm.tsx
 import React, { useState } from 'react';
-import FormField from './FormField';
-import { JsonSchema, FormData } from './types';
-import { Textarea } from './components/ui/textarea';
-import { Separator } from './components/ui/separator';
+import FormField from '@/components/fields/FormField';
+import { JsonSchema, FormData } from '@/types';
+import { Textarea } from '@/components/ui/textarea';
+import { Separator } from '@/components/ui/separator';
 
 interface SchemaFormProps {
   schema: JsonSchema;

@@ -1,4 +1,4 @@
-import { JsonSchema, JsonSchemaProperty } from "./types";
+import { JsonSchema, JsonSchemaProperty } from "@/types";
 
 export const resolveRef = (ref: string, schema: JsonSchema): JsonSchemaProperty | undefined => {
   type PathSegment = keyof JsonSchemaProperty;

@@ -1,6 +1,6 @@
 import React from 'react';
-import DynamicFieldArray from './DynamicFieldArray';
-import { Input } from './components/ui/input';
+import DynamicFieldArray from '@/components/fields/DynamicFieldArray';
+import { Input } from '@/components/ui/input';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type = "text", placeHolder = "" }) => {
     if (type == "boolean") {
