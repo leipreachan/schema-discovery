@@ -5,6 +5,7 @@ import InputField from './InputField';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import SelectField from './SelectField';
+import { Separator } from '../ui/separator';
 
 const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
@@ -26,7 +27,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
       ? getPropertyName(property.additionalProperties.$ref) : "property"
 
     return (
-      <div className="object-field pl-8 pt-2 hover:bg-gray-100">
+      <div className="object-field p-2 pl-8 hover:bg-gray-100 w-full">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
 
@@ -69,25 +70,31 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
 
         {/* Add new additional property */}
         {additionalPropSchema && (
-          <div className='pl-8'>
-            <Input
-              type="text"
-              placeholder={`New ${additionalPropName} name`}
-              value={additionalFieldName}
-              onChange={(e) => setAdditionalFieldName(e.target.value)}
-            />
-            <Button
-              onClick={() => {
-                if (additionalFieldName) {
-                  const newValue: ObjectValue = {
-                    ...objectValue,
-                    [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
-                  };
-                  onChange(name, newValue);
-                  setAdditionalFieldName('');
-                }
-              }}>Add new {additionalPropName}</Button>
-          </div>
+          <span>
+            <Separator orientation="horizontal" className="my-4"/>
+            <div className='pl-8 grid grid-cols-2 w-full justify-items-end'>
+              <div className='w-full'>
+                <Input
+                type="text"
+                placeholder={`New ${additionalPropName} name`}
+                value={additionalFieldName}
+                onChange={(e) => setAdditionalFieldName(e.target.value)}
+              /></div>
+              <div>
+              <Button
+                onClick={() => {
+                  if (additionalFieldName) {
+                    const newValue: ObjectValue = {
+                      ...objectValue,
+                      [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
+                    };
+                    onChange(name, newValue);
+                    setAdditionalFieldName('');
+                  }
+                }}>Add new {additionalPropName}</Button>
+              </div>
+            </div>
+          </span>
         )}
       </div>
     );

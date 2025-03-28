@@ -59,9 +59,9 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
           </Button>
         </div>
       ))}
-        <Button type="button" onClick={handleAdd} >
-          Add value to array
-        </Button>
+      <div className="text-right">
+          <Button type="button" onClick={handleAdd} >+</Button>
+      </div>
     </span>
   );
 }
