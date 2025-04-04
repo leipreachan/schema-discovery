@@ -1,6 +1,6 @@
 import { JsonSchema, JsonSchemaProperty } from "@/types";
 
-export const resolveRef = (ref: string, schema: JsonSchema): JsonSchemaProperty | undefined => {
+export const resolveRef = (ref: string, schema: JsonSchema | undefined): JsonSchemaProperty | undefined => {
   type PathSegment = keyof JsonSchemaProperty;
   const path = ref.split('/').slice(1);
   let current = schema as JsonSchemaProperty;

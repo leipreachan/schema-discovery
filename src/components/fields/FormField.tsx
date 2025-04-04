@@ -12,7 +12,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
   const [additionalFieldName, setAdditionalFieldName] = useState('');
 
   // only object with properties
-  if (property.type === 'object'
+  if (property?.type === 'object'
     && (property.additionalProperties != undefined || property.properties != undefined)) {
     const objectValue = value as ObjectValue;
 
@@ -116,7 +116,8 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
           break;
         }
         case "text": {
-          onChange(name, e.target.value || "");
+          const value = e?.target?.value;
+          onChange(name, (e.target.placeholder == "integer") ? Number.parseInt(value) : value);
         }
       }
     }
