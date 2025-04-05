@@ -15,7 +15,7 @@ export interface ObjectValue {
 }
 
 
-export type FormValue = PrimitiveValue | ObjectValue | Array<string>;
+export type FormValue = PrimitiveValue | ObjectValue | string[];
 
 export interface Items {
   type: string;
@@ -45,12 +45,12 @@ export interface FormData {
 }
 
 export interface FormFieldProps {
-  title: string|null;
+  title?: string|null;
   name: string;
-  property: JsonSchemaProperty;
+  property?: JsonSchemaProperty;
   value: FormValue;
   onChange: (name: string, value: FormValue) => void;
-  schema: JsonSchema; // Pass the full schema to access definitions
+  schema?: JsonSchema; // Pass the full schema to access definitions
   multipleSelect?: boolean;
   propertyEnum?: string[];
 }
