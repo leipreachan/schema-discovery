@@ -2,7 +2,6 @@ import ReactSelect, { Props as ReactSelectProps, GroupBase } from 'react-select'
 import { cn } from '@/lib/utils'
 import { forwardRef } from "react";
 
-
 export type MultiSelectProps<
   Option,
   IsMulti extends boolean = true,
@@ -17,8 +16,8 @@ const MultiSelectField = forwardRef<any, MultiSelectProps<any>>(({ error, ...pro
           ref={ref}
           // className={(value?.length > 0 ? "bg-amber-100" : "")}
           defaultValue={props.value || []}
-          // onChange={onChange}
-          options={props.propertyEnum?.map(item => ({"value": item, "label": item}))}
+          onChange={(e) => props.onChange({target: { type: "select", multiple: true, selectedOptions: e?.map(item => item.value)}})}
+          options={props.propertyEnum?.map((item: string) => ({"value": item, "label": item}))}
           isMulti
           unstyled
           closeMenuOnSelect={false}

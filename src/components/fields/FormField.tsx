@@ -104,23 +104,25 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    if (e.target.tagName == "SELECT") {
-      const selected = Array.from(e.target?.selectedOptions).map((item) => item.value);
-      onChange(name, e.target.multiple ? selected : selected[0]);
-    } else {
-      switch (e.target.type) {
-        case "checkbox": {
-          onChange(name, e.target.checked);
-          break;
-        }
-        case "radio": {
-          onChange(name, JSON.parse(e.target.value));
-          break;
-        }
-        case "text": {
-          const value = e?.target?.value;
-          onChange(name, (e.target.placeholder == "integer") ? Number.parseInt(value) : value);
-        }
+    console.log(e);
+    switch (e.target.type) {
+      case "select": {
+        const selected = e.target.multiple ? 
+        Array.from(e.target?.selectedOptions).map((item) => item) : e.target?.selectedOptions;
+        onChange(name, selected);
+        break;
+      }
+      case "checkbox": {
+        onChange(name, e.target.checked);
+        break;
+      }
+      case "radio": {
+        onChange(name, JSON.parse(e.target.value));
+        break;
+      }
+      case "text": {
+        const value = e?.target?.value;
+        onChange(name, (e.target.placeholder == "integer") ? Number.parseInt(value) : value);
       }
     }
   };
