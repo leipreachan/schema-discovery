@@ -116,8 +116,8 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
         onChange(name, e.target.checked);
         break;
       }
-      case "radio": {
-        onChange(name, JSON.parse(e.target.value));
+      case "boolean": {
+        onChange(name, JSON.parse(e.target?.selectedOptions || null));
         break;
       }
       case "text": {
@@ -181,7 +181,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
         )
       }
       <div>
-        {(propertyData?.enum || property?.items?.enum) ? (
+        { (propertyData?.enum || property?.items?.enum) ? (
           <SelectField
             name={name}
             value={value}
