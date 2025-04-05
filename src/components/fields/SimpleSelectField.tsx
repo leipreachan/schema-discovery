@@ -14,6 +14,7 @@ const SimpleSelectField = forwardRef<any, SimpleSelectProps<any>>(({ error, ...p
     return (
       <ReactSelect
           ref={ref}
+          placeholder="Select (single)..."
           // className={(value?.length > 0 ? "bg-amber-100" : "")}
           defaultValue={props?.value || ""}
           onChange={(e) => props.onChange({target: { type: "select", multiple: false, selectedOptions: e?.value}})}

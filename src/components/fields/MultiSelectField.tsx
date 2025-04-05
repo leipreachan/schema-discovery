@@ -14,6 +14,7 @@ const MultiSelectField = forwardRef<any, MultiSelectProps<any>>(({ error, ...pro
     return (
         <ReactSelect
           ref={ref}
+          placeholder="Select (multiple)..."
           // className={(value?.length > 0 ? "bg-amber-100" : "")}
           defaultValue={props.value || []}
           onChange={(e) => props.onChange({target: { type: "select", multiple: true, selectedOptions: e?.map(item => item.value)}})}
