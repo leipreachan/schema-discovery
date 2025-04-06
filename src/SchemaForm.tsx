@@ -1,7 +1,7 @@
 // SchemaForm.tsx
 import React from 'react';
 import FormField from '@/components/fields/FormField';
-import { JsonSchema, FormData } from '@/types';
+import { JsonSchema, FormData, ObjectValue, PrimitiveValue } from '@/types';
 import TextEditor from '@/components/TextEditor';
 import usePersistState from '@/lib/usePersistStateHook';
 
@@ -35,7 +35,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     return obj;
   }
 
-  const handleChange = (name: string, value: string | number | boolean | string[] | number[]) => {
+  const handleChange = (name: string, value: PrimitiveValue | ObjectValue) => {
     const whiteListedKeys = ["agents", "scenarios"];
     const newValue = { ...formData, [name]: value };
     const cleanedValue = removeEmptyValues(newValue, whiteListedKeys.includes(name)) || {};

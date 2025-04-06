@@ -103,30 +103,6 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     );
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    switch (e.target.type) {
-      case "select": {
-        const selected = e.target.multiple ?
-          Array.from(e.target?.selectedOptions).map((item) => item) : e.target?.selectedOptions;
-        onChange(name, selected);
-        break;
-      }
-      case "checkbox": {
-        onChange(name, e.target.checked);
-        break;
-      }
-      case "boolean": {
-        onChange(name, JSON.parse(e.target?.selectedOptions || null));
-        break;
-      }
-      case "text": {
-        const value = e?.target?.value;
-        const numerical = Number.parseInt(value) || "";
-        onChange(name, (e.target.placeholder == "integer") ? numerical : value);
-      }
-    }
-  };
-
   if (property?.type === 'array' && property?.items?.$ref != undefined) {
     const propsSchema = resolveRef(property?.items?.$ref, schema);
     const arrayValue = (value || []) as ArrayValue;
@@ -178,6 +154,37 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
   if (name.endsWith("additionalProperties")) {
     return;
   }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    let value;
+    switch (e.target.type) {
+      case "select": {
+        value = e.target.multiple ?
+          Array.from(e.target?.selectedOptions).map((item) => item) : e.target?.selectedOptions;
+        break;
+      }
+      case "checkbox": {
+        value = e.target.checked;
+        break;
+      }
+      case "boolean": {
+        value = JSON.parse(e.target?.selectedOptions || null);
+        break;
+      }
+      case "text": {
+        value = e?.target?.value;
+        if (e.target.placeholder == "integer") {
+          value = Number.parseInt(value) || "";
+        }
+        break;
+      }
+      case "object": {
+        value = e.target.value;
+        break;
+      }
+    }
+    onChange(name, value);
+  };
 
   const propertyData = property?.$ref != undefined ? resolveRef(property.$ref, schema) : property;
 
