@@ -1,21 +1,12 @@
-// types.ts
-export interface JsonSchema {
-    type: string;
-    definitions?: Record<string, JsonSchemaProperty>;
-    properties?: Record<string, JsonSchemaProperty>;
-    additionalProperties?: boolean | JsonSchemaProperty | { $ref: string };
-    $defs?: Record<string, JsonSchemaProperty>;
-}
-
-// types.ts
 export type PrimitiveValue = string | number | boolean;
 
 export interface ObjectValue {
   [key: string]: FormValue;
 }
 
+export type ArrayValue = FormValue[];
 
-export type FormValue = PrimitiveValue | ObjectValue | string[];
+export type FormValue = PrimitiveValue | ObjectValue | ArrayValue;
 
 export interface Items {
   type: string;
@@ -53,4 +44,12 @@ export interface FormFieldProps {
   schema?: JsonSchema; // Pass the full schema to access definitions
   multipleSelect?: boolean;
   propertyEnum?: string[];
+}
+
+export interface JsonSchema {
+  type: string;
+  definitions?: Record<string, JsonSchemaProperty>;
+  properties?: Record<string, JsonSchemaProperty>;
+  additionalProperties?: boolean | JsonSchemaProperty | { $ref: string };
+  $defs?: Record<string, JsonSchemaProperty>;
 }

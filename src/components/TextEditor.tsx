@@ -12,7 +12,6 @@ const TextEditor = ({ value, onChange, ...props }) => {
     setErrMessage("");
     try {
       const newValue = JSON.parse(val);
-      console.log("redraw?");
       onChange(newValue);
     } catch (e) {
       setErrMessage(`${e}`);
