@@ -4,9 +4,9 @@ import { resolveRef, getPropertyName } from '@/utils';
 import InputField from './InputField';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import SelectField from './SelectField';
 import { Separator } from '../ui/separator';
 import { Label } from '../ui/label';
+import Select from './Select';
 
 const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
@@ -182,7 +182,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
       }
       <div>
         { (propertyData?.enum || property?.items?.enum) ? (
-          <SelectField
+          <Select
             name={name}
             value={value}
             onChange={handleChange}

@@ -2,16 +2,16 @@ import React from 'react';
 import DynamicFieldArray from '@/components/fields/DynamicFieldArray';
 import { Input } from '@/components/ui/input';
 import { FormFieldProps } from '@/types';
-import SelectField from './SelectField';
+import Select from './Select';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type = "text", placeHolder = "" }) => {
     if (type == "boolean") {
         const allowedValues = ["false", "true"];
         return (
-            <SelectField
+            <Select
                 name={name}
                 value={value}
-                onChange={(e) => onChange({target: {...e.target, type: "boolean"}})}
+                onChange={(e) => onChange({ target: { ...e.target, type: "boolean" } })}
                 propertyEnum={allowedValues}
                 multipleSelect={false}
             />
