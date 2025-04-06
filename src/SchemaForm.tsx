@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData } from '@/types';
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
 import { Separator } from '@/components/ui/separator';
+import TextEditor from './components/TextEditor';
 
 interface SchemaFormProps {
   schema: JsonSchema;
@@ -46,17 +45,6 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     setTextFieldData(JSON.stringify(cleanedValue, null, 4));
   };
 
-  // const handleTextChange = (e) => {
-  //   const newValue = e.target.value;
-  //   setTextFieldData(newValue);
-  //   setErrMessage("");
-  //   try {
-  //     setFormData(JSON.parse(newValue));
-  //   } catch (e) {
-  //     setErrMessage(`${e}`);
-  //   }
-  // }
-
   const handleTextChange = React.useCallback((val: string, viewUpdate) => {
     setTextFieldData(val);
     setErrMessage("");
@@ -93,11 +81,11 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
       </div>
       <div className='top-0 col-span-1 p-1'>
         <div className={errMessage?.length > 0 ? "bg-red-100" : "bg-white-100"}>{errMessage}</div>
-        <CodeMirror 
-        className='w-full h-screen border-2'
-        value={textFieldData} extensions={[javascript()]} onChange={handleTextChange} 
+        <TextEditor 
+          className='w-full h-screen border-2'
+          value={textFieldData} 
+          onChange={handleTextChange}
         />
-        {/* <Textarea className='w-full h-screen' value={textFieldData} onChange={handleTextChange}/> */}
       </div>
     </div>
   );
