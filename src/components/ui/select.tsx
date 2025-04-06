@@ -4,13 +4,14 @@ import { forwardRef } from "react";
 
 
 const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref) => {
-    const isMulti = props.multipleSelect;
-    const placeHolder = `Select (${isMulti ? "multiple" : "single"})`;
 
+    const {multipleSelect, onChange, value, propertyEnum} = props;
+    const placeHolder = `Select (${multipleSelect ? "multiple" : "single"})`;
+    const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({value: item, label: item})) : { value: value, label: value}) : null;
     const onChangeHandler = (e) => {
-        if (props.onChange) {
-            return props.onChange(
-                { target: { type: "select", multiple: isMulti, selectedOptions: isMulti ? e?.map(item => item.value): e?.value } }
+        if (onChange) {
+            return onChange(
+                { target: { type: "select", multiple: multipleSelect, selectedOptions: multipleSelect ? e?.map(item => item.value) : e?.value } }
             )
         }
     }
@@ -19,12 +20,12 @@ const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref)
         <ReactSelect
             ref={ref}
             placeholder={placeHolder}
-            defaultValue={props.value || []}
+            defaultValue={defaultValue}
             onChange={onChangeHandler}
-            options={props.propertyEnum?.map((item: string) => ({ "value": item, "label": item }))}
-            isMulti={isMulti}
+            options={propertyEnum?.map((item: string) => ({ "value": item, "label": item }))}
+            isMulti={multipleSelect}
             unstyled
-            closeMenuOnSelect={!isMulti}
+            closeMenuOnSelect={!multipleSelect}
             isClearable={true}
             classNames={{
                 control: ({ isFocused }) =>

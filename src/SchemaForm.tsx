@@ -18,8 +18,9 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
       for (const key in obj) {
         obj[key] = removeEmptyValues(obj[key]);
         // Remove keys with empty objects or arrays
-        if (obj[key] === "null"
-          || obj[key] === null
+        if (obj[key] == "null"
+          || obj[key] == null
+          || obj[key] == ""
           || (Array.isArray(obj[key]) && obj[key].length <= 0)
           || (andNodesToo && typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
         ) {

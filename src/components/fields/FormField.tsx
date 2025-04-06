@@ -121,7 +121,8 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
       }
       case "text": {
         const value = e?.target?.value;
-        onChange(name, (e.target.placeholder == "integer") ? Number.parseInt(value) : value);
+        const numerical = Number.parseInt(value) || "";
+        onChange(name, (e.target.placeholder == "integer") ? numerical : value);
       }
     }
   };
