@@ -61,9 +61,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
               schema={schema}
             />
           ))}
-          {/* <button type="submit">Submit</button> */}
         </form>
-        <Separator orientation="vertical" />
       </div>
       <div className='top-0 col-span-1 p-1'>
         <TextEditor 

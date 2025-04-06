@@ -17,6 +17,7 @@ const App: React.FC = () => {
     <div className="App">
       <h1>JSON Schema Form Generator</h1>
       {schema && <SchemaForm schema={schema} />}
+      <div className="mt-6 text-xs text-right">made by @leipreachan, 2025</div>
     </div>
   );
 }
