@@ -1,7 +1,9 @@
 // SchemaForm.tsx
 import React, { useState } from 'react';
-import FormField from './FormField';
-import { JsonSchema, FormData } from './types';
+import FormField from '@/components/fields/FormField';
+import { JsonSchema, FormData } from '@/types';
+import { Separator } from '@/components/ui/separator';
+import TextEditor from './components/TextEditor';
 
 interface SchemaFormProps {
   schema: JsonSchema;
@@ -12,27 +14,27 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [textFieldData, setTextFieldData] = useState<string>("{}");
   const [errMessage, setErrMessage] = useState<string>("");
 
-  function removeEmptyValues(obj: object, andNodesToo: boolean = false): object|null {
+  function removeEmptyValues(obj: object, andNodesToo: boolean = false): object | null {
     if (typeof obj === 'object' && obj !== null) {
-        // Recursively process child nodes
-        for (const key in obj) {
-            obj[key] = removeEmptyValues(obj[key]);
-            // Remove keys with empty objects or arrays
-            if (obj[key] === "null" 
-              || obj[key] === null 
-              || (Array.isArray(obj[key]) && obj[key].length <=0)
-              || (andNodesToo && typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
-             ) {
-                delete obj[key];
-            }
+      // Recursively process child nodes
+      for (const key in obj) {
+        obj[key] = removeEmptyValues(obj[key]);
+        // Remove keys with empty objects or arrays
+        if (obj[key] === "null"
+          || obj[key] === null
+          || (Array.isArray(obj[key]) && obj[key].length <= 0)
+          || (andNodesToo && typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
+        ) {
+          delete obj[key];
         }
-        // If the object is empty after processing, return null
-        if (andNodesToo && Object.keys(obj).length === 0) {
-            return null;
-        }
+      }
+      // If the object is empty after processing, return null
+      if (andNodesToo && Object.keys(obj).length === 0) {
+        return null;
+      }
     }
     return obj;
-}
+  }
 
   const handleChange = (name: string, value: string | number | boolean | Array) => {
     const whiteListedKeys = ["agents", "scenarios"];
@@ -43,16 +45,15 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     setTextFieldData(JSON.stringify(cleanedValue, null, 4));
   };
 
-  const handleTextChange = (e) => {
-    const newValue = e.target.value;
-    setTextFieldData(newValue);
+  const handleTextChange = React.useCallback((val: string, viewUpdate) => {
+    setTextFieldData(val);
     setErrMessage("");
     try {
-      setFormData(JSON.parse(newValue));
+      setFormData(JSON.parse(val));
     } catch (e) {
       setErrMessage(`${e}`);
     }
-  }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,10 +77,15 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           ))}
           {/* <button type="submit">Submit</button> */}
         </form>
+        <Separator orientation="vertical" />
       </div>
       <div className='top-0 col-span-1 p-1'>
-        <div className={errMessage?.length > 0 ? "bg-red-100": "bg-white-100"}>{errMessage}</div>
-        <textarea className='w-full h-screen border-1 border-gray-300' value={textFieldData} onChange={handleTextChange}/>
+        <div className={errMessage?.length > 0 ? "bg-red-100" : "bg-white-100"}>{errMessage}</div>
+        <TextEditor 
+          className='w-full h-screen border-2'
+          value={textFieldData} 
+          onChange={handleTextChange}
+        />
       </div>
     </div>
   );

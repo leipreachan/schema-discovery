@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { FormFieldProps, JsonSchemaProperty, ObjectValue } from './types';
-import SelectField from './SelectField';
-import { resolveRef, getPropertyName } from './utils';
+import { FormFieldProps, JsonSchemaProperty, ObjectValue } from '@/types';
+import { resolveRef, getPropertyName } from '@/utils';
 import InputField from './InputField';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '../ui/separator';
+import { Label } from '../ui/label';
+import Select from '../ui/select';
 
 const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
 
   // only object with properties
-  if (property.type === 'object'
+  if (property?.type === 'object'
     && (property.additionalProperties != undefined || property.properties != undefined)) {
     const objectValue = value as ObjectValue;
 
@@ -24,14 +28,14 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
       ? getPropertyName(property.additionalProperties.$ref) : "property"
 
     return (
-      <div className="object-field pl-8 pt-2 hover:bg-gray-100">
+      <div className="object-field p-2 pl-8 hover:bg-gray-100 w-full">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
 
         {/* Render defined properties */}
         {property.properties && Object.entries(property.properties).map(([subName, subProperty]) => (
           <FormField
-            key={subName}
+            key={`${name}.${subName}`}
             title={`${name}.${subName}`}
             name={`${name}.${subName}`}
             property={subProperty}
@@ -49,7 +53,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
           if (!property.properties || !(subName in property.properties)) {
             return (
               <FormField
-                key={subName}
+                key={`${name}.${subName}`}
                 title={`${name}.${subName}`}
                 name={`${name}.${subName}`}
                 property={additionalPropSchema}
@@ -67,49 +71,58 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
 
         {/* Add new additional property */}
         {additionalPropSchema && (
-          <div className='pl-8'>
-            <input
-              className="m-4 p-1 border-1 border-gray-300 rounded-sm"
-              type="text"
-              placeholder={`New ${additionalPropName} name`}
-              value={additionalFieldName}
-              onChange={(e) => setAdditionalFieldName(e.target.value)}
-            />
-            <button
-              className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
-              onClick={() => {
-                if (additionalFieldName) {
-                  const newValue: ObjectValue = {
-                    ...objectValue,
-                    [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
-                  };
-                  onChange(name, newValue);
-                  setAdditionalFieldName('');
-                }
-              }}>Add new {additionalPropName}</button>
-          </div>
+          <span>
+            <Separator orientation="horizontal" className="my-4"/>
+            <div className='pl-8 grid grid-cols-2 w-full justify-items-end'>
+              <div className='w-full'>
+                <Input
+                className='bg-white'
+                type="text"
+                placeholder={`New ${additionalPropName} name`}
+                value={additionalFieldName}
+                onChange={(e) => setAdditionalFieldName(e.target.value)}
+              /></div>
+              <div>
+              <Button
+                className="shadow-xs"
+                onClick={() => {
+                  if (additionalFieldName) {
+                    const newValue: ObjectValue = {
+                      ...objectValue,
+                      [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
+                    };
+                    onChange(name, newValue);
+                    setAdditionalFieldName('');
+                  }
+                }}>Add new {additionalPropName}</Button>
+              </div>
+            </div>
+          </span>
         )}
       </div>
     );
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    if (e.target.tagName == "SELECT") {
-      const selected = Array.from(e.target?.selectedOptions).map((item) => item.value);
-      onChange(name, e.target.multiple ? selected : selected[0]);
-    } else {
-      switch (e.target.type) {
-        case "checkbox": {
-          onChange(name, e.target.checked);
-          break;
-        }
-        case "radio": {
-          onChange(name, JSON.parse(e.target.value));
-          break;
-        }
-        case "text": {
-          onChange(name, e.target.value || "");
-        }
+    console.log(e);
+    switch (e.target.type) {
+      case "select": {
+        const selected = e.target.multiple ? 
+        Array.from(e.target?.selectedOptions).map((item) => item) : e.target?.selectedOptions;
+        onChange(name, selected);
+        break;
+      }
+      case "checkbox": {
+        onChange(name, e.target.checked);
+        break;
+      }
+      case "boolean": {
+        onChange(name, JSON.parse(e.target?.selectedOptions || null));
+        break;
+      }
+      case "text": {
+        const value = e?.target?.value;
+        onChange(name, (e.target.placeholder == "integer") ? Number.parseInt(value) : value);
       }
     }
   };
@@ -118,15 +131,17 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
     // const items = resolveRef(property?.items?.$ref, schema);
     return (
       <div className="form-field pl-8 pt-2">
-        <button
-          className='rounded-full bg-gray-500 px-5 py-2 text-sm leading-5 font-semibold text-black hover:bg-sky-700'
+        <Button
           onClick={() => {
-              // const newValue = {
-              //   ...value,
-              //   items
-              // };
-              // onChange(additionalFieldName, [newValue]);
-          }}>Add {property.title || name}</button>
+            if (additionalFieldName) {
+              const newValue: ObjectValue = {
+                ...objectValue,
+                [additionalFieldName]: additionalPropSchema.type === 'object' ? {} : ''
+              };
+              onChange(name, newValue);
+              setAdditionalFieldName('');
+            }
+          }}>Add {property.title || name}</Button>
       </div>
     )
   }
@@ -154,20 +169,20 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
   };
 
   return (
-    <div className="form-field pt grid grid-cols-2 pt-1 pb-1 hover:bg-amber-50">
+    <div className="form-field pt grid grid-cols-2 p-2 hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
       {
         title && (
           <div className='break-words'>
-            <label htmlFor={name}>
+            <Label htmlFor={name}>
               {breakLongTitle(propertyData?.title || title)}
               <span>{propertyData?.description && <p className="field-description">{propertyData?.description}</p>}</span>
-            </label>
+            </Label>
           </div>
         )
       }
       <div>
-        {(propertyData?.enum || property?.items?.enum) ? (
-          <SelectField
+        { (propertyData?.enum || property?.items?.enum) ? (
+          <Select
             name={name}
             value={value}
             onChange={handleChange}
