@@ -104,7 +104,7 @@ const FormField: React.FC<FormFieldProps> = ({title, name, property, value, onCh
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    console.log(e);
+    // console.log(e);
     switch (e.target.type) {
       case "select": {
         const selected = e.target.multiple ? 

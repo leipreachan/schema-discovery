@@ -11,8 +11,6 @@ interface SchemaFormProps {
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
-  const [textFieldData, setTextFieldData] = useState<string>("{}");
-  const [errMessage, setErrMessage] = useState<string>("");
 
   function removeEmptyValues(obj: object, andNodesToo: boolean = false): object | null {
     if (typeof obj === 'object' && obj !== null) {
@@ -36,24 +34,12 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     return obj;
   }
 
-  const handleChange = (name: string, value: string | number | boolean | Array) => {
+  const handleChange = (name: string, value: string | number | boolean | string[] | number[]) => {
     const whiteListedKeys = ["agents", "scenarios"];
     const newValue = { ...formData, [name]: value };
     const cleanedValue = removeEmptyValues(newValue, whiteListedKeys.includes(name)) || {};
-    // const cleanedValue = removeEmptyNodes({ ...formData, [name]: value });
     setFormData(cleanedValue as FormData);
-    setTextFieldData(JSON.stringify(cleanedValue, null, 4));
   };
-
-  const handleTextChange = React.useCallback((val: string, viewUpdate) => {
-    setTextFieldData(val);
-    setErrMessage("");
-    try {
-      setFormData(JSON.parse(val));
-    } catch (e) {
-      setErrMessage(`${e}`);
-    }
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,11 +66,10 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
         <Separator orientation="vertical" />
       </div>
       <div className='top-0 col-span-1 p-1'>
-        <div className={errMessage?.length > 0 ? "bg-red-100" : "bg-white-100"}>{errMessage}</div>
         <TextEditor 
           className='w-full h-screen border-2'
-          value={textFieldData} 
-          onChange={handleTextChange}
+          value={JSON.stringify(formData, null, 4)} 
+          onChange={setFormData}
         />
       </div>
     </div>
