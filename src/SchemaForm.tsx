@@ -1,15 +1,16 @@
 // SchemaForm.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData } from '@/types';
-import TextEditor from './components/TextEditor';
+import TextEditor from '@/components/TextEditor';
+import usePersistState from '@/lib/usePersistStateHook';
 
 interface SchemaFormProps {
   schema: JsonSchema;
 }
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
-  const [formData, setFormData] = useState<FormData>({});
+  const [formData, setFormData] = usePersistState<FormData>({}, 'formData');
 
   function removeEmptyValues(obj: object, andNodesToo: boolean = false): object | null {
     if (typeof obj === 'object' && obj !== null) {
