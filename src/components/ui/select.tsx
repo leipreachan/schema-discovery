@@ -8,9 +8,11 @@ const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref)
     const placeHolder = `Select (${isMulti ? "multiple" : "single"})`;
 
     const onChangeHandler = (e) => {
-        return props.onChange(
-            { target: { type: "select", multiple: isMulti, selectedOptions: isMulti ? e?.map(item => item.value): e?.value } }
-        )
+        if (props.onChange) {
+            return props.onChange(
+                { target: { type: "select", multiple: isMulti, selectedOptions: isMulti ? e?.map(item => item.value): e?.value } }
+            )
+        }
     }
 
     return (

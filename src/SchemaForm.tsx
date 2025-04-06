@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData } from '@/types';
-import { Separator } from '@/components/ui/separator';
 import TextEditor from './components/TextEditor';
 
 interface SchemaFormProps {

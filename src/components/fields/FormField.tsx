@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { ArrayValue, FormFieldProps, FormValue, JsonSchemaProperty, ObjectValue } from '@/types';
+import { ArrayValue, FormFieldProps, JsonSchemaProperty, ObjectValue } from '@/types';
 import { resolveRef, getPropertyName } from '@/utils';
 import InputField from './InputField';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Separator } from '../ui/separator';
-import { Label } from '../ui/label';
-import Select from '../ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
+import Select from '@/components/ui/select';
 
 const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');

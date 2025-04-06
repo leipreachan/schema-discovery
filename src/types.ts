@@ -47,9 +47,11 @@ export interface FormFieldProps {
 }
 
 export interface JsonSchema {
+  title?: string;
   type: string;
   definitions?: Record<string, JsonSchemaProperty>;
   properties?: Record<string, JsonSchemaProperty>;
   additionalProperties?: boolean | JsonSchemaProperty | { $ref: string };
   $defs?: Record<string, JsonSchemaProperty>;
+  description?: string;
 }
