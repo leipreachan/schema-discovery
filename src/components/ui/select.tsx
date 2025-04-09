@@ -21,7 +21,7 @@ const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref)
             ref={ref}
             name={name}
             placeholder={placeHolder}
-            defaultValue={defaultValue}
+            value={defaultValue}
             onChange={onChangeHandler}
             options={propertyEnum?.map((item: string) => ({ "value": item, "label": item }))}
             isMulti={multipleSelect}
