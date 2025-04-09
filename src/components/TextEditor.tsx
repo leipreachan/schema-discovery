@@ -1,6 +1,4 @@
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { githubLight, githubDark } from '@uiw/codemirror-theme-github';
+import Editor from '@monaco-editor/react';
 import React, { useState } from 'react';
 
 const TextEditor = ({ value, onChange, ...props }) => {
@@ -21,11 +19,12 @@ const TextEditor = ({ value, onChange, ...props }) => {
   return (
     <>
       <div className={errMessage?.length > 0 ? "bg-red-100" : "bg-white-100"}>{errMessage}</div>
-      <CodeMirror
+   
+      <Editor
         className='w-full h-screen border-2'
         value={value}
-        theme={githubLight}
-        extensions={[javascript()]}
+        defaultLanguage='json'
+        theme="github-light"
         onChange={onChangeHandler}
         {...props}
       />

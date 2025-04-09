@@ -10,15 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@codemirror/lang-javascript": "github:codemirror/lang-javascript",
+    "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.14",
-    "@uiw/codemirror-theme-github": "^4.23.10",
-    "@uiw/react-codemirror": "^4.23.10",
-    "@uiw/react-textarea-code-editor": "^3.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.482.0",

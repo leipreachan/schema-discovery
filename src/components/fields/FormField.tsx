@@ -28,7 +28,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
       ? getPropertyName(property.additionalProperties.$ref) : "property"
 
     return (
-      <div className="object-field p-2 pl-8 hover:bg-gray-100 w-full">
+      <div className="object-field p-4 hover:bg-gray-100 w-full">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
 
@@ -205,7 +205,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
   };
 
   return (
-    <div className="form-field pt grid grid-cols-2 p-2 hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
+    <div className="form-field pt grid grid-cols-2 p-4 hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
       {
         title && (
           <div className='break-words'>
