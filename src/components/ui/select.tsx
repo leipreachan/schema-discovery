@@ -9,11 +9,7 @@ const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref)
     const placeHolder = `Select (${multipleSelect ? "multiple" : "single"})`;
     const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({value: item, label: item})) : { value: value, label: value}) : null;
     const onChangeHandler = (e) => {
-        if (onChange) {
-            return onChange(
-                { target: { type: "select", multiple: multipleSelect, selectedOptions: multipleSelect ? e?.map(item => item.value) : e?.value } }
-            )
-        }
+        return onChange(multipleSelect ? e?.map(item => item.value) : e?.value )
     }
 
     return (

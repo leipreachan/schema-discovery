@@ -21,13 +21,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
       newObject = { ...newObject, [values[i].key]: values[i].value }
     }
 
-    onChange(
-      {
-        target: {
-          type: "object",
-          value: newObject
-        }
-      });
+    onChange(newObject);
   }
 
   const handleKeyChange = (index) => (e) => {

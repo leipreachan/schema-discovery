@@ -157,34 +157,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     return;
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    let value;
-    switch (e.target.type) {
-      case "select": {
-        value = e.target.multiple ?
-          Array.from(e.target?.selectedOptions).map((item) => item) : e.target?.selectedOptions;
-        break;
-      }
-      case "checkbox": {
-        value = e.target.checked;
-        break;
-      }
-      case "boolean": {
-        value = JSON.parse(e.target?.selectedOptions || null);
-        break;
-      }
-      case "text": {
-        value = e?.target?.value;
-        if (e.target.placeholder == "integer") {
-          value = Number.parseInt(value) || "";
-        }
-        break;
-      }
-      case "object": {
-        value = e.target.value;
-        break;
-      }
-    }
+  const handleChange = (value) => {
     onChange(name, value);
   };
 

@@ -4,19 +4,14 @@ import { Button } from "@/components/ui/button";
 import { FormFieldProps } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
-  const [fields, setFields] = useState(value);
+  const [fields, setFields] = useState([]);
 
   useEffect(() => {
     setFields(value);
   }, [value])
 
   const globalHandler = (values) => {
-    onChange({
-      target: {
-        type: "text",
-        value: Array.from(values)
-      }
-    });
+    onChange(Array.from(values));
   }
 
   // Handle value update
