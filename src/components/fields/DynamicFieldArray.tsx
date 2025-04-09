@@ -41,9 +41,9 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
   return (
     <>
       {fields.length > 0 && Array.from(fields).map((field, index) => (
-        <div key={index} className="flex items-center mb-2">
+        <div key={window.crypto.randomUUID()} className="flex items-center mb-2">
           <FormField
-            key={`${name}_${index}`}
+            key={window.crypto.randomUUID()}
             title={null}
             name={`${index}`}
             value={`${field}`}

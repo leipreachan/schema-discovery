@@ -37,7 +37,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
         {/* Render defined properties */}
         {property.properties && Object.entries(property.properties).map(([subName, subProperty]) => (
           <FormField
-            key={`${dotName}${subName}`}
+            key={window.crypto.randomUUID()}
             title={`${dotName}${subName}`}
             name={`${dotName}${subName}`}
             property={subProperty}
@@ -55,7 +55,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
           if (!property.properties || !(subName in property.properties)) {
             return (
               <FormField
-                key={`${dotName}${subName}`}
+                key={window.crypto.randomUUID()}
                 title={`${dotName}${subName}`}
                 name={`${dotName}${subName}`}
                 property={additionalPropSchema}
@@ -115,7 +115,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
         {schema?.description && <p>{schema?.description}</p>}
 
         {arrayValue.map((item, index) => (
-          <div key={index} className="array-item">
+          <div key={window.crypto.randomUUID()} className="array-item">
             <Button
               onClick={() => {
                 const newArray = arrayValue.filter((_, i) => i !== index);
@@ -125,6 +125,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
               X
             </Button>
             <FormField
+              key={window.crypto.randomUUID()}
               name={`${name}[${index}]`}
               schema={schema}
               property={propsSchema}
