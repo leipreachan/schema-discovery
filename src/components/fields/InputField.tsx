@@ -12,7 +12,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
             <Select
                 name={name}
                 value={value}
-                onChange={(e) => onChange({ target: { ...e.target, type: "boolean" } })}
+                onChange={(e) => onChange(name, { target: { ...e.target, type: "boolean" } })}
                 propertyEnum={allowedValues}
                 multipleSelect={false}
             />

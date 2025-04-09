@@ -27,6 +27,8 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
       && property.additionalProperties.$ref != undefined
       ? getPropertyName(property.additionalProperties.$ref) : "property"
 
+    const dotName = name ? name + "." : "";
+
     return (
       <div className="object-field p-4 hover:bg-gray-100 w-full">
         <h3>{property.title || name}</h3>
@@ -35,9 +37,9 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
         {/* Render defined properties */}
         {property.properties && Object.entries(property.properties).map(([subName, subProperty]) => (
           <FormField
-            key={`${name}.${subName}`}
-            title={`${name}.${subName}`}
-            name={`${name}.${subName}`}
+            key={`${dotName}${subName}`}
+            title={`${dotName}${subName}`}
+            name={`${dotName}${subName}`}
             property={subProperty}
             value={(objectValue[subName] || objectValue[subName] === false) ? objectValue[subName] : ''}
             onChange={(subFieldName, subValue) => {
@@ -53,9 +55,9 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
           if (!property.properties || !(subName in property.properties)) {
             return (
               <FormField
-                key={`${name}.${subName}`}
-                title={`${name}.${subName}`}
-                name={`${name}.${subName}`}
+                key={`${dotName}${subName}`}
+                title={`${dotName}${subName}`}
+                name={`${dotName}${subName}`}
                 property={additionalPropSchema}
                 value={subValue}
                 onChange={(subFieldName, newSubValue) => {

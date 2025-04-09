@@ -1,7 +1,7 @@
 // SchemaForm.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FormField from '@/components/fields/FormField';
-import { JsonSchema, FormData, ObjectValue, PrimitiveValue } from '@/types';
+import { JsonSchema, FormData, JsonSchemaProperty } from '@/types';
 import TextEditor from '@/components/TextEditor';
 import usePersistState from '@/lib/usePersistStateHook';
 
@@ -10,65 +10,75 @@ interface SchemaFormProps {
 }
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
-  const [formData, setFormData] = usePersistState<FormData>({}, 'formData');
+  const [formData, setFormData] = useState<FormData>({});
+  const [editorData, setEditorData] = usePersistState<FormData>({}, 'editorData');
 
-  function removeEmptyValues(obj: object, andNodesToo: boolean = false): object | null {
-    if (typeof obj === 'object' && obj !== null) {
+  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData | null {
+    const newObj =  JSON.parse(JSON.stringify(obj)) ;
+    if (typeof newObj === 'object' && newObj !== null) {
       // Recursively process child nodes
-      for (const key in obj) {
-        obj[key] = removeEmptyValues(obj[key]);
+      for (const key in newObj) {
+        newObj[key] = removeEmptyValues(newObj[key]);
         // Remove keys with empty objects or arrays
-        if (obj[key] == "null"
-          || obj[key] == null
-          || obj[key] == ""
-          || (Array.isArray(obj[key]) && obj[key].length <= 0)
-          || (andNodesToo && typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)
+        if (newObj[key] == "null"
+          || newObj[key] == null
+          || newObj[key] == ""
+          || (Array.isArray(newObj[key]) && newObj[key].length <= 0)
+          || (andNodesToo && typeof newObj[key] === 'object' && Object.keys(newObj[key]).length === 0)
         ) {
-          delete obj[key];
+          delete newObj[key];
         }
       }
-      // If the object is empty after processing, return null
-      if (andNodesToo && Object.keys(obj).length === 0) {
-        return null;
+      // If the object is empty after processing, return {}
+      if (andNodesToo && Object.keys(newObj).length === 0) {
+        return {};
       }
     }
-    return obj;
+    return newObj as FormData;
   }
 
-  const handleChange = (name: string, value: PrimitiveValue | ObjectValue) => {
-    const whiteListedKeys = ["agents", "scenarios"];
-    const newValue = { ...formData, [name]: value };
-    const cleanedValue = removeEmptyValues(newValue, whiteListedKeys.includes(name)) || {};
-    setFormData(cleanedValue as FormData);
+  const handleFormChange = (name: string, value: FormData) => {
+    const newValue = name ? { ...formData, [name]: value } : { ...formData, ...value };
+    setFormData(newValue as FormData);
   };
+
+  const handleEditorChange = (value) => {
+    setEditorData(value);
+    setFormData(value);
+  }
+
+  // load data when opening page
+  useEffect(() => {
+    setFormData(editorData);
+  }, []);
+
+  useEffect(() => {
+    setEditorData(removeEmptyValues(formData));
+  }, [formData])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
   };
 
   return (
     <div className="grid grid-cols-2 h-screen">
       <div className='col-span-1 h-screen overflow-y-scroll p-1 pl-4'>
         <form onSubmit={handleSubmit}>
-          {Object.entries(schema.properties).map(([name, property]) => (
-            <FormField
-              key={name}
-              title={name}
-              name={name}
-              property={property}
-              value={(formData[name] || formData[name] == false) ? formData[name] : ''}
-              onChange={handleChange}
-              schema={schema}
-            />
-          ))}
+          <FormField
+            title={""}
+            name={""}
+            property={schema as JsonSchemaProperty}
+            value={formData}
+            onChange={handleFormChange}
+            schema={schema}
+          />
         </form>
       </div>
       <div className='top-0 col-span-1 p-1'>
-        <TextEditor 
-          className='w-full h-screen border-2'
-          value={JSON.stringify(formData, null, 4)} 
-          onChange={setFormData}
+        <TextEditor
+          className='w-full border-2'
+          value={JSON.stringify(editorData, null, 4)}
+          onChange={handleEditorChange}
         />
       </div>
     </div>

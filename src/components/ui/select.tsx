@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 
 const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref) => {
 
-    const {multipleSelect, onChange, value, propertyEnum} = props;
+    const {name, multipleSelect, onChange, value, propertyEnum} = props;
     const placeHolder = `Select (${multipleSelect ? "multiple" : "single"})`;
     const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({value: item, label: item})) : { value: value, label: value}) : null;
     const onChangeHandler = (e) => {
@@ -19,6 +19,7 @@ const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref)
     return (
         <ReactSelect
             ref={ref}
+            name={name}
             placeholder={placeHolder}
             defaultValue={defaultValue}
             onChange={onChangeHandler}

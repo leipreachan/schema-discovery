@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormField from "@/components/fields/FormField";
 import { Button } from "@/components/ui/button";
 import { FormFieldProps } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
   const [fields, setFields] = useState(value);
+
+  useEffect(() => {
+    setFields(value);
+  }, [value])
 
   const globalHandler = (values) => {
     onChange({
@@ -14,8 +18,9 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
       }
     });
   }
+
   // Handle value update
-  const handleChange = (fieldName, fieldValue) => {
+  const handleChange = (fieldName: string, fieldValue) => {
     const newFields = fields;
     newFields[fieldName] = fieldValue;
     setFields(newFields);
@@ -39,7 +44,7 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
   const arraySchema = {type: "text"};
 
   return (
-    <span>
+    <>
       {fields.length > 0 && Array.from(fields).map((field, index) => (
         <div key={index} className="flex items-center mb-2">
           <FormField
@@ -62,7 +67,7 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
       <div className="text-right">
           <Button type="button" onClick={handleAdd} >+</Button>
       </div>
-    </span>
+    </>
   );
 }
 
