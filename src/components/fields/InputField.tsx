@@ -28,7 +28,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
     } else {
         return (
             <Input
-                className={"bg-white" + (value ? "bg-amber-100" : "")}
+                className={"w-full bg-white" + (value ? "bg-amber-100" : "")}
                 type={"text"}
                 id={name}
                 value={value}
