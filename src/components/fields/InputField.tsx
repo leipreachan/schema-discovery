@@ -26,6 +26,15 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
             <DynamicFieldObject name={name} value={value} onChange={onChange} />
         )
     } else {
+        let regexPattern = "";
+        if (pattern != undefined) {
+            try {
+                new RegExp(pattern as string);
+                regexPattern = pattern;
+            } catch(e) {
+                console.log(`String ${pattern} seems to be an invalid RegExp pattern`, e);
+            }
+        }
         return (
             <Input
                 className={"bg-white" + (value ? "bg-amber-100" : "")}
@@ -33,7 +42,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                 id={name}
                 value={`${value}`}
                 onChange={(e) => onChange(e.target.value)}
-                pattern={pattern}
+                pattern={regexPattern}
                 placeholder={placeHolder}
             />
         )
