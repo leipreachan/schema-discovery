@@ -74,7 +74,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           />
         </form>
       </div>
-      <div className='top-0 col-span-1 p-1'>
+      <div className='top-0 col-span-1 p-1 h-screen'>
         <TextEditor
           className='w-full border-2'
           value={JSON.stringify(editorData, null, 4)}
