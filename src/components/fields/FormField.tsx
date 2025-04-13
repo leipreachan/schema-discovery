@@ -30,7 +30,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     const dotName = name ? name + "." : "";
 
     return (
-      <div className="object-field p-4 hover:bg-gray-100 w-full">
+      <div className="w-full p-4 object-field hover:bg-gray-100">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
 
@@ -75,7 +75,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
         {additionalPropSchema && (
           <span>
             <Separator orientation="horizontal" className="my-4" />
-            <div className='pl-8 grid grid-cols-2 w-full justify-items-end'>
+            <div className='grid w-full grid-cols-2 pl-8 justify-items-end'>
               <div className='w-full'>
                 <Input
                   className='bg-white'
@@ -110,7 +110,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     const arrayValue = (value || []) as ArrayValue;
 
     return (
-      <div className="object-field p-2 pl-8 hover:bg-gray-100 w-full">
+      <div className="w-full p-2 pl-8 object-field hover:bg-gray-100">
         <h3>{schema?.title || name}</h3>
         {schema?.description && <p>{schema?.description}</p>}
 
@@ -178,7 +178,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
   };
 
   return (
-    <div className="form-field pt grid grid-cols-2 p-4 hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
+    <div className="grid grid-cols-2 p-4 form-field pt hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
       {
         title && (
           <div className='break-words'>
