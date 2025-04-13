@@ -15,6 +15,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                     name={name}
                     value={value === "" ? null : (value ? "true" : "false")}
                     onChange={(e) => onChange(e === undefined ? null : e === "true")}
+                    placeholder="Select (boolean)"
                     propertyEnum={allowedValues}
                     multipleSelect={false}
                 />
