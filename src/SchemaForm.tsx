@@ -22,7 +22,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
         // Remove keys with empty objects or arrays
         if (newObj[key] == "null"
           || newObj[key] == null
-          || newObj[key] == ""
+          || newObj[key] === ""
           || (Array.isArray(newObj[key]) && newObj[key].length <= 0)
           || (andNodesToo && typeof newObj[key] === 'object' && Object.keys(newObj[key]).length === 0)
         ) {
