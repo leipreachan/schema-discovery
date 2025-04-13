@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { FormFieldProps } from '@/types';
 import Select from '../ui/custom-select';
 import DynamicFieldObject from './DynamicFieldObject';
+import { cn } from '@/lib/utils';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type, placeHolder = "" }) => {
     switch (type) {
@@ -49,7 +50,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
             }
             return (
                 <Input
-                    className={"bg-white" + (value ? "bg-amber-100" : "")}
+                    className={cn("bg-white w-full", value && "bg-amber-100")}
                     type={"text"}
                     id={name}
                     value={`${value}`}
