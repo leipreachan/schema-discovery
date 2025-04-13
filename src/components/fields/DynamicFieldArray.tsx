@@ -4,20 +4,21 @@ import { Button } from "@/components/ui/button";
 import { FormFieldProps } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState([] as string[]);
 
   useEffect(() => {
     setFields(value);
   }, [value])
 
-  const globalHandler = (values) => {
-    onChange(Array.from(values));
+  const globalHandler = (values: string[]) => {
+    onChange(values);
   }
 
   // Handle value update
-  const handleChange = (fieldName: string, fieldValue) => {
+  const handleChange = (fieldNumberAsString: string, fieldValue: string) => {
+    console.log(fieldNumberAsString, fieldValue);
     const newFields = fields;
-    newFields[fieldName] = fieldValue;
+    newFields[Number.parseInt(fieldNumberAsString)] = fieldValue;
     setFields(newFields);
     globalHandler(newFields);
   };
@@ -30,7 +31,7 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
   };
 
   // Remove field
-  const handleRemove = (index) => {
+  const handleRemove = (index: number) => {
     const newFields = fields.filter((_, i) => i !== index);
     setFields(newFields);
     globalHandler(newFields);

@@ -9,7 +9,7 @@ interface KV {
 }
 
 const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState([{ key: "", value: "" }]);
 
   useEffect(() => {
     setFields(Object.entries(value).map(([keyVal, valVal]) => ({ key: keyVal, value: valVal })));
@@ -24,7 +24,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
     onChange(newObject);
   }
 
-  const handleKeyChange = (index) => (e) => {
+  const handleKeyChange = (index: number) => (e) => {
     const newFields: KV[] = fields as KV[];
     const key = e.target.value;
     const value = newFields[index].value;
@@ -34,7 +34,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
   }
 
   // Handle value update
-  const handleValueChange = (index) => (e) => {
+  const handleValueChange = (index: number) => (e) => {
     const newFields: KV[] = fields as KV[];
     const key = fields[index].key;
     const value = e.target.value;

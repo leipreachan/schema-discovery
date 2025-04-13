@@ -42,7 +42,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
             name={`${dotName}${subName}`}
             property={subProperty}
             value={(objectValue[subName] || objectValue[subName] === false) ? objectValue[subName] : ''}
-            onChange={(subFieldName, subValue) => {
+            onChange={(_, subValue) => {
               const newValue: ObjectValue = { ...objectValue, [subName]: subValue };
               onChange(name, newValue);
             }}
@@ -60,7 +60,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
                 name={`${dotName}${subName}`}
                 property={additionalPropSchema}
                 value={subValue}
-                onChange={(subFieldName, newSubValue) => {
+                onChange={(_, newSubValue) => {
                   const newValue: ObjectValue = { ...objectValue, [subName]: newSubValue };
                   onChange(name, newValue);
                 }}
@@ -129,7 +129,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
               schema={schema}
               property={propsSchema}
               value={item}
-              onChange={(subName, newValue) => {
+              onChange={(_, newValue) => {
                 const newArray = [...arrayValue];
                 newArray[index] = newValue;
                 onChange(name, newArray);
@@ -167,15 +167,13 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
 
 
   const breakLongTitle = (title: string) => {
-    const wbr = (<wbr />);
-
     return (
-      <span>
+      <>
         {
           title.split(".")
-            .reduce((acc, x) => acc === null ? [x] : [acc, ".", wbr, x], null)
+            .reduce((acc, x) => acc.length == 0 ? x : acc + "." + x, "")
         }
-      </span>
+      </>
     )
   };
 

@@ -3,13 +3,13 @@ import { cn } from '@/lib/utils'
 import { forwardRef } from "react";
 
 
-const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref) => {
+const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, ...props }, ref) => {
 
-    const {name, multipleSelect, onChange, value, propertyEnum} = props;
+    const { name, multipleSelect, onChange, value, propertyEnum } = props;
     const placeHolder = `Select (${multipleSelect ? "multiple" : "single"})`;
-    const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({value: item, label: item})) : { value: value, label: value}) : null;
+    const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({ value: item, label: item })) : { value: value, label: value }) : null;
     const onChangeHandler = (e) => {
-        return onChange(multipleSelect ? e?.map(item => item.value) : e?.value )
+        return onChange(multipleSelect ? e?.map((item: { key: string, value: string }) => item.value) : e?.value)
     }
 
     return (

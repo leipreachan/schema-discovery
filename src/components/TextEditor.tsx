@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 const TextEditor = ({ value, onChange, ...props }) => {
   const [errMessage, setErrMessage] = useState<string>("");
-  // const [textFieldData, setTextFieldData] = useState<string>(value);
 
   const onChangeHandler = React.useCallback((val: string) => {
     setErrMessage("");

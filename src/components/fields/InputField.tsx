@@ -31,7 +31,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                 className={"bg-white" + (value ? "bg-amber-100" : "")}
                 type={"text"}
                 id={name}
-                value={value}
+                value={`${value}`}
                 onChange={(e) => onChange(e.target.value)}
                 pattern={pattern}
                 placeholder={placeHolder}

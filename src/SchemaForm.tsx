@@ -13,7 +13,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
   const [editorData, setEditorData] = usePersistState<FormData>({}, 'editorData');
 
-  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData | null {
+  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData {
     const newObj =  JSON.parse(JSON.stringify(obj)) ;
     if (typeof newObj === 'object' && newObj !== null) {
       // Recursively process child nodes
