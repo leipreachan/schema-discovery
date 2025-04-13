@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
 import Select from '@/components/ui/custom-select';
+import { cn } from '@/lib/utils';
 
 const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
@@ -30,7 +31,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     const dotName = name ? name + "." : "";
 
     return (
-      <div className="w-full p-4 object-field">
+      <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
 
@@ -75,10 +76,10 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
         {additionalPropSchema && (
           <span>
             <Separator orientation="horizontal" className="my-4" />
-            <div className='grid w-full grid-cols-2 pl-8 justify-items-end'>
+            <div className='grid w-full grid-cols-2 p-4 justify-items-end'>
               <div className='w-full'>
                 <Input
-                  className='bg-white'
+                  className='w-full bg-white'
                   type="text"
                   placeholder={`New ${additionalPropName} name`}
                   value={additionalFieldName}
@@ -109,7 +110,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     const arrayValue = (value || []) as ArrayValue;
 
     return (
-      <div className="w-full p-2 pl-8 object-field">
+      <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{schema?.title || name}</h3>
         {schema?.description && <p>{schema?.description}</p>}
 
@@ -177,7 +178,12 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
   };
 
   return (
-    <div className="grid grid-cols-2 p-4 form-field pt hover:bg-amber-50 hover:shadow-gray-300 dark:hover:bg-gray-700 dark:hover:shadow-gray-900 hover:shadow-xs hover:rounded-md">
+    <div className={cn(
+      "grid grid-cols-2 p-4 form-field pt",
+      "hover:bg-amber-50 hover:shadow-gray-300",
+      "dark:hover:bg-gray-700 dark:hover:shadow-gray-900",
+      "hover:shadow-xs hover:rounded-md",
+      title && "grid grid-cols-2")}>
       {
         title && (
           <div className='break-words'>
