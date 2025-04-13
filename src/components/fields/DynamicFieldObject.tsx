@@ -60,7 +60,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
   return (
     <>
       {fields.map(({ key, value }, index) => (
-        <div key={window.crypto.randomUUID()} className="flex items-center mb-2">
+        <div key={index} className="flex items-center mb-2">
           <Input
             className={"bg-white" + (value ? "bg-amber-100" : "")}
             type={"text"}

@@ -65,7 +65,6 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
       <div className='col-span-1 h-screen overflow-y-scroll p-1 pl-4'>
         <form onSubmit={handleSubmit}>
           <FormField
-            key={window.crypto.randomUUID()}
             title={""}
             name={""}
             property={schema as JsonSchemaProperty}
