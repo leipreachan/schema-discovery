@@ -35,7 +35,7 @@ const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, ...props
                     ),
                 placeholder: () => 'text-muted-foreground',
                 input: () => 'text-sm',
-                menu: () => 'mt-2 rounded-md border bg-popover text-popover-foreground shadow-md py-1 dark:bg-input',
+                menu: () => 'mt-2 rounded-md border bg-popover text-popover-foreground shadow-md py-1',
                 menuList: () => 'text-sm',
                 option: ({ isFocused, isSelected }) =>
                     cn(
