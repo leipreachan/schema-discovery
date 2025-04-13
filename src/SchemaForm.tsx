@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData, JsonSchemaProperty } from '@/types';
-import TextEditor from '@/components/TextEditor';
+import { TextEditor } from '@/components/text-editor';
 import usePersistState from '@/lib/usePersistStateHook';
 
 interface SchemaFormProps {
@@ -13,7 +13,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   const [formData, setFormData] = useState<FormData>({});
   const [editorData, setEditorData] = usePersistState<FormData>({}, 'editorData');
 
-  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData | null {
+  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData {
     const newObj =  JSON.parse(JSON.stringify(obj)) ;
     if (typeof newObj === 'object' && newObj !== null) {
       // Recursively process child nodes
@@ -22,7 +22,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
         // Remove keys with empty objects or arrays
         if (newObj[key] == "null"
           || newObj[key] == null
-          || newObj[key] == ""
+          || newObj[key] === ""
           || (Array.isArray(newObj[key]) && newObj[key].length <= 0)
           || (andNodesToo && typeof newObj[key] === 'object' && Object.keys(newObj[key]).length === 0)
         ) {
@@ -61,11 +61,10 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 h-screen">
-      <div className='col-span-1 h-screen overflow-y-scroll p-1 pl-4'>
+    <div className="grid h-screen grid-cols-2 dark:bg-zinc-800">
+      <div className='h-screen col-span-1 p-1 pl-4 overflow-y-scroll'>
         <form onSubmit={handleSubmit}>
           <FormField
-            key={window.crypto.randomUUID()}
             title={""}
             name={""}
             property={schema as JsonSchemaProperty}
@@ -75,7 +74,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           />
         </form>
       </div>
-      <div className='top-0 col-span-1 p-1'>
+      <div className='top-0 h-screen col-span-1 p-1'>
         <TextEditor
           className='w-full border-2'
           value={JSON.stringify(editorData, null, 4)}

@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import FormField from "@/components/fields/FormField";
-import { Button } from "@/components/ui/button";
+import { CustomButton as Button } from "../ui/custom-button";
 import { FormFieldProps } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState([] as string[]);
 
   useEffect(() => {
     setFields(value);
   }, [value])
 
-  const globalHandler = (values) => {
-    onChange(Array.from(values));
+  const globalHandler = (values: string[]) => {
+    onChange(values);
   }
 
   // Handle value update
-  const handleChange = (fieldName: string, fieldValue) => {
+  const handleChange = (fieldNumberAsString: string, fieldValue: string) => {
+    console.log(fieldNumberAsString, fieldValue);
     const newFields = fields;
-    newFields[fieldName] = fieldValue;
+    newFields[Number.parseInt(fieldNumberAsString)] = fieldValue;
     setFields(newFields);
     globalHandler(newFields);
   };
@@ -30,20 +31,20 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
   };
 
   // Remove field
-  const handleRemove = (index) => {
+  const handleRemove = (index: number) => {
     const newFields = fields.filter((_, i) => i !== index);
     setFields(newFields);
     globalHandler(newFields);
   };
 
-  const arraySchema = {type: "text"};
+  const arraySchema = { type: "text" };
 
   return (
     <>
       {fields.length > 0 && Array.from(fields).map((field, index) => (
-        <div key={window.crypto.randomUUID()} className="flex items-center mb-2">
+        <div key={index} className="flex items-center mb-2">
           <FormField
-            key={window.crypto.randomUUID()}
+            key={`${name}_${index}`}
             title={null}
             name={`${index}`}
             value={`${field}`}
@@ -52,7 +53,6 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
             schema={arraySchema}
           />
           <Button
-            type="button"
             onClick={() => handleRemove(index)}
           >
             X
@@ -60,7 +60,8 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
         </div>
       ))}
       <div className="text-right">
-          <Button type="button" onClick={handleAdd} >+</Button>
+        <Button
+          onClick={handleAdd} >+</Button>
       </div>
     </>
   );

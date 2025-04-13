@@ -3,13 +3,13 @@ import { cn } from '@/lib/utils'
 import { forwardRef } from "react";
 
 
-const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref) => {
+const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, ...props }, ref) => {
 
-    const {name, multipleSelect, onChange, value, propertyEnum} = props;
+    const { name, multipleSelect, onChange, value, propertyEnum } = props;
     const placeHolder = `Select (${multipleSelect ? "multiple" : "single"})`;
-    const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({value: item, label: item})) : { value: value, label: value}) : null;
+    const defaultValue = value ? (Array.isArray(value) ? value.map(item => ({ value: item, label: item })) : { value: value, label: value }) : null;
     const onChangeHandler = (e) => {
-        return onChange(multipleSelect ? e?.map(item => item.value) : e?.value )
+        return onChange(multipleSelect ? e?.map((item: { key: string, value: string }) => item.value) : e?.value)
     }
 
     return (
@@ -29,7 +29,7 @@ const Select = forwardRef<any, ReactSelectProps<any>>(({ error, ...props }, ref)
                     cn(
                         'flex w-full !min-h-0 rounded-md border border-input bg-background px-3 py-[3px] text-sm shadow-xs transition-colors',
                         'placeholder:text-muted-foreground focus-visible:outline-none',
-                        'disabled:cursor-not-allowed disabled:opacity-50',
+                        'disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30',
                         isFocused && 'ring-1 ring-ring',
                         error && 'border-destructive ring-destructive',
                     ),

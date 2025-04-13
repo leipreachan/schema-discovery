@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { FormFieldProps } from "@/types";
 import { Input } from "../ui/input";
+import clsx from "clsx";
+import { CustomButton as Button } from "../ui/custom-button";
+import { cn } from "@/lib/utils";
 
 interface KV {
   key: string;
@@ -9,7 +11,7 @@ interface KV {
 }
 
 const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState([{ key: "", value: "" }]);
 
   useEffect(() => {
     setFields(Object.entries(value).map(([keyVal, valVal]) => ({ key: keyVal, value: valVal })));
@@ -24,7 +26,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
     onChange(newObject);
   }
 
-  const handleKeyChange = (index) => (e) => {
+  const handleKeyChange = (index: number) => (e) => {
     const newFields: KV[] = fields as KV[];
     const key = e.target.value;
     const value = newFields[index].value;
@@ -34,7 +36,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
   }
 
   // Handle value update
-  const handleValueChange = (index) => (e) => {
+  const handleValueChange = (index: number) => (e) => {
     const newFields: KV[] = fields as KV[];
     const key = fields[index].key;
     const value = e.target.value;
@@ -60,9 +62,9 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
   return (
     <>
       {fields.map(({ key, value }, index) => (
-        <div key={window.crypto.randomUUID()} className="flex items-center mb-2">
+        <div key={index} className="flex items-center mb-2">
           <Input
-            className={"bg-white" + (value ? "bg-amber-100" : "")}
+            className={cn("text-base", value ? "bg-amber-100" : "")}
             type={"text"}
             id={name}
             value={key}
@@ -70,7 +72,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
             placeholder={"name"}
           /> :
           <Input
-            className={"bg-white" + (value ? "bg-amber-100" : "")}
+            className={cn("text-base", value ? "bg-amber-100" : "")}
             type={"text"}
             id={name}
             value={value}
@@ -78,7 +80,6 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
             placeholder={"value"}
           />
           <Button
-            type="button"
             onClick={() => handleRemove(index)}
           >
             X
@@ -86,7 +87,8 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
         </div>
       ))}
       <div className="text-right">
-        <Button type="button" onClick={handleAdd} >+</Button>
+        <Button
+          onClick={handleAdd} >+</Button>
       </div>
     </>
   );

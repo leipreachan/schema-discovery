@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SchemaForm from './SchemaForm';
 import { JsonSchema } from './types';
+import { ThemeProvider } from './components/theme-provider';
+import { Header } from './components/header';
 
 const App: React.FC = () => {
   const [schema, setSchema] = useState<JsonSchema | null>(null);
@@ -14,11 +16,13 @@ const App: React.FC = () => {
   }, [schemaPath]);
 
   return (
-    <div className="App">
-      <h1 className='text-2xl mb-2'>JSON Schema Discovery</h1>
-      {schema && <SchemaForm schema={schema} />}
-      <div className="mt-6 text-xs text-right">made by <a href="https://github.com/leipreachan/schema-discovery" target="_blank">@leipreachan</a>, 2025</div>
-    </div>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <div className="App">
+        <Header />
+        {schema && <SchemaForm schema={schema} />}
+        <div className="mt-6 text-xs text-right">made by <a href="https://github.com/leipreachan/schema-discovery" target="_blank">@leipreachan</a>, 2025</div>
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -44,6 +44,9 @@ export interface FormFieldProps {
   schema?: JsonSchema; // Pass the full schema to access definitions
   multipleSelect?: boolean;
   propertyEnum?: string[];
+  pattern?: string;
+  type?: string;
+  placeHolder?: string;
 }
 
 export interface JsonSchema {
