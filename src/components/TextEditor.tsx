@@ -1,6 +1,7 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from './theme-provider';
+import clsx from 'clsx';
 
 const TextEditor = ({ value, onChange, ...props }) => {
   const [errMessage, setErrMessage] = useState<string>("");
@@ -30,7 +31,12 @@ const TextEditor = ({ value, onChange, ...props }) => {
 
   return (
     <>
-      <div className={errMessage?.length > 0 ? "bg-red-100" : "bg-white-100"}>{errMessage}</div>
+      {
+        errMessage && (
+          <div className={"p-4 bg-red-100 dark:text-gray-900"}>{errMessage}</div>
+        )
+      }
+
 
       <Editor
         className='w-full border-2'

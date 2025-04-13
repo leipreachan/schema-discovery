@@ -61,7 +61,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
   };
 
   return (
-    <div className="grid h-screen grid-cols-2">
+    <div className="grid h-screen grid-cols-2 dark:bg-zinc-800">
       <div className='h-screen col-span-1 p-1 pl-4 overflow-y-scroll'>
         <form onSubmit={handleSubmit}>
           <FormField

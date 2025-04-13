@@ -29,13 +29,13 @@ const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, ...props
                     cn(
                         'flex w-full !min-h-0 rounded-md border border-input bg-background px-3 py-[3px] text-sm shadow-xs transition-colors',
                         'placeholder:text-muted-foreground focus-visible:outline-none',
-                        'disabled:cursor-not-allowed disabled:opacity-50',
+                        'disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30',
                         isFocused && 'ring-1 ring-ring',
                         error && 'border-destructive ring-destructive',
                     ),
                 placeholder: () => 'text-muted-foreground',
                 input: () => 'text-sm',
-                menu: () => 'mt-2 rounded-md border bg-popover text-popover-foreground shadow-md py-1',
+                menu: () => 'mt-2 rounded-md border bg-popover text-popover-foreground shadow-md py-1 dark:bg-input',
                 menuList: () => 'text-sm',
                 option: ({ isFocused, isSelected }) =>
                     cn(

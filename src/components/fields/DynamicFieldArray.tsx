@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FormField from "@/components/fields/FormField";
-import { Button } from "@/components/ui/button";
+import { CustomButton as Button } from "../ui/custom-button";
 import { FormFieldProps } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
@@ -37,7 +37,7 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
     globalHandler(newFields);
   };
 
-  const arraySchema = {type: "text"};
+  const arraySchema = { type: "text" };
 
   return (
     <>
@@ -53,7 +53,6 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
             schema={arraySchema}
           />
           <Button
-            type="button"
             onClick={() => handleRemove(index)}
           >
             X
@@ -61,7 +60,8 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
         </div>
       ))}
       <div className="text-right">
-          <Button type="button" onClick={handleAdd} >+</Button>
+        <Button
+          onClick={handleAdd} >+</Button>
       </div>
     </>
   );

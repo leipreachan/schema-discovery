@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrayValue, FormFieldProps, JsonSchemaProperty, ObjectValue } from '@/types';
 import { resolveRef, getPropertyName } from '@/utils';
 import InputField from './InputField';
-import { Button } from '@/components/ui/button';
+import { CustomButton as Button } from "../ui/custom-button";
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
@@ -30,7 +30,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     const dotName = name ? name + "." : "";
 
     return (
-      <div className="w-full p-4 object-field hover:bg-gray-100">
+      <div className="w-full p-4 object-field">
         <h3>{property.title || name}</h3>
         {property.description && <p className="field-description">{property.description}</p>}
 
@@ -86,7 +86,6 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
                 /></div>
               <div>
                 <Button
-                  className="shadow-xs"
                   onClick={() => {
                     if (additionalFieldName) {
                       const newValue: ObjectValue = {
@@ -110,7 +109,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     const arrayValue = (value || []) as ArrayValue;
 
     return (
-      <div className="w-full p-2 pl-8 object-field hover:bg-gray-100">
+      <div className="w-full p-2 pl-8 object-field">
         <h3>{schema?.title || name}</h3>
         {schema?.description && <p>{schema?.description}</p>}
 
@@ -178,7 +177,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
   };
 
   return (
-    <div className="grid grid-cols-2 p-4 form-field pt hover:bg-amber-50 hover:shadow-gray-300 hover:shadow-xs hover:rounded-md">
+    <div className="grid grid-cols-2 p-4 form-field pt hover:bg-amber-50 hover:shadow-gray-300 dark:hover:bg-gray-700 dark:hover:shadow-gray-900 hover:shadow-xs hover:rounded-md">
       {
         title && (
           <div className='break-words'>
