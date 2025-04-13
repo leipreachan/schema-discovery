@@ -6,7 +6,7 @@ import { CustomButton as Button } from "../ui/custom-button";
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
-import Select from '@/components/ui/select';
+import Select from '@/components/ui/custom-select';
 
 const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onChange, schema }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState('');
