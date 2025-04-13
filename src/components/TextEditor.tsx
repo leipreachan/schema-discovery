@@ -1,7 +1,6 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from './theme-provider';
-import clsx from 'clsx';
 
 const TextEditor = ({ value, onChange, ...props }) => {
   const [errMessage, setErrMessage] = useState<string>("");

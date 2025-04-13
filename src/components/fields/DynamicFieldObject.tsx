@@ -3,6 +3,7 @@ import { FormFieldProps } from "@/types";
 import { Input } from "../ui/input";
 import clsx from "clsx";
 import { CustomButton as Button } from "../ui/custom-button";
+import { cn } from "@/lib/utils";
 
 interface KV {
   key: string;
@@ -63,7 +64,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
       {fields.map(({ key, value }, index) => (
         <div key={index} className="flex items-center mb-2">
           <Input
-            className={clsx("text-base", value ? "bg-amber-100" : "")}
+            className={cn("text-base", value ? "bg-amber-100" : "")}
             type={"text"}
             id={name}
             value={key}
@@ -71,7 +72,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
             placeholder={"name"}
           /> :
           <Input
-            className={clsx("text-base", value ? "bg-amber-100" : "")}
+            className={cn("text-base", value ? "bg-amber-100" : "")}
             type={"text"}
             id={name}
             value={value}
