@@ -64,7 +64,6 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
       {fields.map(({ key, value }, index) => (
         <div key={index} className="flex items-center mb-2">
           <Input
-            className={cn("text-base w-full", value && "bg-amber-100")}
             type={"text"}
             id={name}
             value={key}
@@ -72,8 +71,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
             placeholder={"name"}
           /> :
           <Input
-            className={cn("text-base w-full", value && "bg-amber-100")}
-            type={"text"}
+            type={"text"} 
             id={name}
             value={value}
             onChange={handleValueChange(index)}

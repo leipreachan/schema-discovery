@@ -79,7 +79,6 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
             <div className='grid w-full grid-cols-2 p-4 justify-items-end'>
               <div className='w-full'>
                 <Input
-                  className='w-full bg-white'
                   type="text"
                   placeholder={`New ${additionalPropName} name`}
                   value={additionalFieldName}

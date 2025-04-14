@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type, placeHolder = "" }) => {
     switch (type) {
-        case "boolean":
+        case "boolean": {
             const allowedValues = ["false", "true"];
             return (
                 <Select
@@ -20,6 +20,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                     multipleSelect={false}
                 />
             );
+        }
         case "array":
             return (
                 <DynamicFieldArray name={name} value={value} onChange={onChange} />
@@ -31,7 +32,6 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
         case "integer":
             return (
                 <Input
-                    className={"bg-white" + (value ? "bg-amber-100" : "")}
                     type={"text"}
                     id={name}
                     value={`${value}`}
@@ -40,7 +40,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                 />
             )
         default:
-            let regexPattern = "";
+            { let regexPattern = "";
             if (pattern != undefined) {
                 try {
                     new RegExp(pattern as string);
@@ -51,7 +51,6 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
             }
             return (
                 <Input
-                    className={cn("bg-white w-full", value && "bg-amber-100")}
                     type={"text"}
                     id={name}
                     value={`${value}`}
@@ -59,7 +58,7 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                     pattern={regexPattern}
                     placeholder={placeHolder}
                 />
-            )
+            ) }
     }
 }
 
