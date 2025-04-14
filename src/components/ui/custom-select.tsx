@@ -12,7 +12,6 @@ const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, placehol
         return onChange(multipleSelect ? e?.map((item: { key: string, value: string }) => item.value) : e?.value)
     }
 
-    console.log(name, value);
     return (
         <ReactSelect
             ref={ref}
@@ -33,7 +32,7 @@ const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, placehol
                         'disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30',
                         isFocused && 'ring-1 ring-ring',
                         error && 'border-destructive ring-destructive',
-                        ((value !== null && value !== "") || (Array.isArray(value) && value.length > 0)) && "bg-amber-100 dark:border-blue-300 dark:bg-gray-600"
+                        ((!Array.isArray(value) && value !== null && value !== "") || (Array.isArray(value) && value.length > 0)) && "bg-amber-100 dark:border-blue-300 dark:bg-gray-600"
                     ),
                 placeholder: () => 'text-muted-foreground',
                 input: () => 'text-sm',

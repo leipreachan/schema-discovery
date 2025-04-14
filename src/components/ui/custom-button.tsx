@@ -8,7 +8,11 @@ const CustomButton = ({ className = "", onClick, ...props }) => {
     }
     return (
         <Button
-            className={cn("text-gray-400 hover:text-white bg-black hover:bg-gray-600", className)}
+            className={cn("text-gray-400 hover:text-white bg-black",
+                "hover:bg-gray-500 hover:shadow-xs",
+                "hover:shadow-gray-200",
+                "dark:hover:bg-gray-800 dark:hover:shadow-gray-900",
+                className)}
             onClick={onClickHandler}
             {...props}
         />

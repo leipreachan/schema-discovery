@@ -178,7 +178,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
 
   return (
     <div className={cn(
-      "grid grid-cols-2 p-4 form-field pt",
+      "w-full p-4 form-field pt",
       "hover:bg-amber-50 hover:shadow-gray-300",
       "dark:hover:bg-gray-700 dark:hover:shadow-gray-900",
       "hover:shadow-xs hover:rounded-md",
