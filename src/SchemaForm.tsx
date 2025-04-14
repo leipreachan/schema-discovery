@@ -1,5 +1,5 @@
 // SchemaForm.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData, JsonSchemaProperty } from '@/types';
 import { TextEditor } from '@/components/text-editor';
@@ -10,11 +10,10 @@ interface SchemaFormProps {
 }
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
-  const [formData, setFormData] = useState<FormData>({});
-  const [editorData, setEditorData] = usePersistState<FormData>({}, 'editorData');
+  const [formData, setFormData] = usePersistState<FormData>({}, 'formData');
 
-  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData {
-    const newObj = JSON.parse(JSON.stringify(obj));
+  function removeEmptyValues(obj: object, andNodesToo: boolean = true, unwrap: boolean = false): FormData {
+    const newObj = unwrap ? JSON.parse(JSON.stringify(obj)) : obj;
     if (typeof newObj === 'object' && newObj !== null) {
       // Recursively process child nodes
       for (const key in newObj) {
@@ -42,27 +41,13 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
     setFormData(newValue as FormData);
   };
 
-  const handleEditorChange = (value) => {
-    setEditorData(value);
-    setFormData(value);
-  }
-
-  // load data when opening page
-  useEffect(() => {
-    setFormData(editorData);
-  }, []);
-
-  useEffect(() => {
-    setEditorData(removeEmptyValues(formData));
-  }, [formData])
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
   return (
     <div className="grid h-screen grid-cols-2 dark:bg-zinc-800">
-      <div className='h-screen col-span-1 p-1 pl-4 overflow-y-scroll'>
+      <div className='h-screen p-1 overflow-y-scroll'>
         <form onSubmit={handleSubmit}>
           <FormField
             title={""}
@@ -74,11 +59,10 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           />
         </form>
       </div>
-      <div className='top-0 h-screen col-span-1 p-1'>
+      <div className='top-0 h-screen p-1'>
         <TextEditor
-          className='w-full border-2'
-          value={JSON.stringify(editorData, null, 4)}
-          onChange={handleEditorChange}
+          value={JSON.stringify(removeEmptyValues(formData, true), null, 4)}
+          onChange={handleFormChange}
         />
       </div>
     </div>
