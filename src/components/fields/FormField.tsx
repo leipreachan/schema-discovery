@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrayValue, FormFieldProps, JsonSchemaProperty, ObjectValue } from '@/types';
 import { resolveRef, getPropertyName } from '@/utils';
 import InputField from './InputField';
-import { CustomButton as Button } from "../ui/custom-button";
+import { CustomButton as Button } from "@/components/ui/custom-button";
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SchemaForm from './SchemaForm';
 import { JsonSchema } from './types';
-import { ThemeProvider } from './components/theme-provider';
-import { Header } from './components/header';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Header } from '@/components/Header';
 
 const App: React.FC = () => {
   const [schema, setSchema] = useState<JsonSchema | null>(null);

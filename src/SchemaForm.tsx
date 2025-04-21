@@ -1,5 +1,5 @@
 // SchemaForm.tsx
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData, JsonSchemaProperty } from '@/types';
 import { TextEditor } from '@/components/text-editor';
