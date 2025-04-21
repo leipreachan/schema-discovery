@@ -14,6 +14,30 @@ export const TextEditor = ({ value, onChange, ...props }) => {
     }
   };
 
+  function removeEmptyValues(obj: object, andNodesToo: boolean = true, unwrap: boolean = false): FormData {
+    const newObj = unwrap ? JSON.parse(JSON.stringify(obj)) : obj;
+    if (typeof newObj === 'object' && newObj !== null) {
+      // Recursively process child nodes
+      for (const key in newObj) {
+        newObj[key] = removeEmptyValues(newObj[key]);
+        // Remove keys with empty objects or arrays
+        if (newObj[key] == "null"
+          || newObj[key] == null
+          || newObj[key] === ""
+          || (Array.isArray(newObj[key]) && newObj[key].length <= 0)
+          || (andNodesToo && typeof newObj[key] === 'object' && Object.keys(newObj[key]).length === 0)
+        ) {
+          delete newObj[key];
+        }
+      }
+      // If the object is empty after processing, return {}
+      if (andNodesToo && Object.keys(newObj).length === 0) {
+        return {};
+      }
+    }
+    return newObj as FormData;
+  }
+
   const { theme } = useTheme();
   const monaco = useMonaco();
 
@@ -22,6 +46,8 @@ export const TextEditor = ({ value, onChange, ...props }) => {
       monaco.editor.setTheme(theme === "dark" ? "vs-dark" : "vs-light");
     }
   }, [theme, monaco]);
+
+  const textValue = JSON.stringify(removeEmptyValues(value), null, 4);
 
   return (
     <>
@@ -33,7 +59,7 @@ export const TextEditor = ({ value, onChange, ...props }) => {
 
       <Editor
         className='w-full border-2'
-        value={value}
+        value={textValue}
         defaultLanguage='json'
         onChange={onChangeHandler}
         {...props}
