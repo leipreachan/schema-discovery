@@ -1,5 +1,5 @@
 // SchemaForm.tsx
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import FormField from '@/components/fields/FormField';
 import { JsonSchema, FormData, JsonSchemaProperty } from '@/types';
 import { TextEditor } from '@/components/text-editor';
@@ -10,51 +10,12 @@ interface SchemaFormProps {
 }
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
-  const [formData, setFormData] = useState<FormData>({});
-  const [editorData, setEditorData] = usePersistState<FormData>({}, 'editorData');
-
-  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData {
-    const newObj = JSON.parse(JSON.stringify(obj));
-    if (typeof newObj === 'object' && newObj !== null) {
-      // Recursively process child nodes
-      for (const key in newObj) {
-        newObj[key] = removeEmptyValues(newObj[key]);
-        // Remove keys with empty objects or arrays
-        if (newObj[key] == "null"
-          || newObj[key] == null
-          || newObj[key] === ""
-          || (Array.isArray(newObj[key]) && newObj[key].length <= 0)
-          || (andNodesToo && typeof newObj[key] === 'object' && Object.keys(newObj[key]).length === 0)
-        ) {
-          delete newObj[key];
-        }
-      }
-      // If the object is empty after processing, return {}
-      if (andNodesToo && Object.keys(newObj).length === 0) {
-        return {};
-      }
-    }
-    return newObj as FormData;
-  }
+  const [formData, setFormData] = usePersistState<FormData>({}, 'formData');
 
   const handleFormChange = (name: string, value: FormData) => {
-    const newValue = name ? { ...formData, [name]: value } : { ...formData, ...value };
+    const newValue = name ? { ...formData, [name]: value } : { ...value };
     setFormData(newValue as FormData);
   };
-
-  const handleEditorChange = (value) => {
-    setEditorData(value);
-    setFormData(value);
-  }
-
-  // load data when opening page
-  useEffect(() => {
-    setFormData(editorData);
-  }, []);
-
-  useEffect(() => {
-    setEditorData(removeEmptyValues(formData));
-  }, [formData])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +23,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
 
   return (
     <div className="grid h-screen grid-cols-2 dark:bg-zinc-800">
-      <div className='h-screen col-span-1 p-1 pl-4 overflow-y-scroll'>
+      <div className='h-screen p-1 overflow-y-scroll'>
         <form onSubmit={handleSubmit}>
           <FormField
             title={""}
@@ -74,11 +35,10 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
           />
         </form>
       </div>
-      <div className='top-0 h-screen col-span-1 p-1'>
+      <div className='top-0 h-screen p-1'>
         <TextEditor
-          className='w-full border-2'
-          value={JSON.stringify(editorData, null, 4)}
-          onChange={handleEditorChange}
+          value={formData}
+          onChange={handleFormChange}
         />
       </div>
     </div>

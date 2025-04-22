@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { FormFieldProps } from "@/types";
-import { Input } from "../ui/input";
-import clsx from "clsx";
-import { CustomButton as Button } from "../ui/custom-button";
-import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { CustomButton as Button } from "@/components/ui/custom-button";
 
 interface KV {
   key: string;

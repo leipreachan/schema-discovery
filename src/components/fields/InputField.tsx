@@ -2,9 +2,8 @@ import React from 'react';
 import DynamicFieldArray from '@/components/fields/DynamicFieldArray';
 import { Input } from '@/components/ui/input';
 import { FormFieldProps } from '@/types';
-import Select from '../ui/custom-select';
+import Select from '@/components/ui/custom-select';
 import DynamicFieldObject from './DynamicFieldObject';
-import { cn } from '@/lib/utils';
 
 const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, type, placeHolder = "" }) => {
     switch (type) {
