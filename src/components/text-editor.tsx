@@ -24,11 +24,15 @@ export const TextEditor = ({ value, onChange, ...props }) => {
     obj: object,
     andNodesToo: boolean = true
   ): FormData {
-    const newObj = JSON.parse(JSON.stringify(obj));
-    if (typeof newObj === "object" && newObj !== null) {
+    const newObj = obj;
+    // const newObj = JSON.parse(JSON.stringify(obj));
+
+    const isObject = typeof newObj === "object";
+    const isArray = Array.isArray(newObj);
+    if ((isObject || isArray) && newObj !== null) {
       // Recursively process child nodes
       for (const key in newObj) {
-        newObj[key] = removeEmptyValues(newObj[key]);
+        newObj[key] = removeEmptyValues(newObj[key], true);
         // Remove keys with empty objects or arrays
         if (
           newObj[key] == NULL_TEXT_VALUE ||
@@ -38,13 +42,20 @@ export const TextEditor = ({ value, onChange, ...props }) => {
             typeof newObj[key] === "object" &&
             Object.keys(newObj[key]).length === 0)
         ) {
+          if (isArray) {
+            newObj.splice(key, 1);
+          } else {
           delete newObj[key];
+          }
         }
       }
       // If the object is empty after processing, return {}
-      if (andNodesToo && Object.keys(newObj).length === 0) {
-        return {};
-      }
+      // if (isObject && andNodesToo && Object.keys(newObj).length == 0) {
+      //   return {};
+      // }
+      // if (isArray && andNodesToo && newObj.length == 0) {
+      //   return [];
+      // }
     }
     return newObj as FormData;
   }

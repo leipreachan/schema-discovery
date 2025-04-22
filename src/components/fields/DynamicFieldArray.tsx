@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import FormField from "@/components/fields/FormField";
 import { CustomButton as Button } from "@/components/ui/custom-button";
-import { FormFieldProps } from "@/types";
+import { FormFieldProps, NULL_TEXT_VALUE } from "@/types";
 
-const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) => {
+const DynamicFieldArray: React.FC<FormFieldProps> = ({
+  name,
+  value,
+  onChange,
+}) => {
   const [fields, setFields] = useState([] as string[]);
 
   useEffect(() => {
     setFields(value);
-  }, [value])
+  }, [value]);
 
   const globalHandler = (values: string[]) => {
     onChange(values);
-  }
+  };
 
   // Handle value update
   const handleChange = (fieldNumberAsString: string, fieldValue: string) => {
-    console.log(fieldNumberAsString, fieldValue);
     const newFields = fields;
     newFields[Number.parseInt(fieldNumberAsString)] = fieldValue;
     setFields(newFields);
@@ -41,30 +44,26 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({ name, value, onChange }) 
 
   return (
     <>
-      {fields.length > 0 && Array.from(fields).map((field, index) => (
-        <div key={index} className="flex items-center mb-2">
-          <FormField
-            key={`${name}_${index}`}
-            title={null}
-            name={`${index}`}
-            value={`${field}`}
-            onChange={handleChange}
-            property={arraySchema}
-            schema={arraySchema}
-          />
-          <Button
-            onClick={() => handleRemove(index)}
-          >
-            X
-          </Button>
-        </div>
-      ))}
+      {fields.length > 0 &&
+        Array.from(fields).map((field, index) => (
+          <div key={index} className="flex items-center mb-2">
+            <FormField
+              key={`${name}_${index}`}
+              title={null}
+              name={`${index}`}
+              value={`${field == null ? NULL_TEXT_VALUE : field}`}
+              onChange={handleChange}
+              property={arraySchema}
+              schema={arraySchema}
+            />
+            <Button onClick={() => handleRemove(index)}>X</Button>
+          </div>
+        ))}
       <div className="text-right">
-        <Button
-          onClick={handleAdd} >+</Button>
+        <Button onClick={handleAdd}>+</Button>
       </div>
     </>
   );
-}
+};
 
 export default DynamicFieldArray;
