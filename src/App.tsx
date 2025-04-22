@@ -1,13 +1,13 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import SchemaForm from "@/SchemaForm";
 import { JsonSchema } from "./types";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/Header";
 import { UploadSchema } from "./UploadSchema";
+import usePersistState from "./lib/usePersistStateHook";
 
 const App: React.FC = () => {
-  const [schema, setSchema] = useState<JsonSchema | null>(null);
-  // const [loading, setLoading] = useState<string>(true);
+  const [schema, setSchema] = usePersistState<JsonSchema | null>(null, 'schemaData');
 
   useEffect(() => {
     const schemaPath = `${import.meta.env.VITE_SCHEMA_NAME}`;
@@ -23,10 +23,14 @@ const App: React.FC = () => {
     }
   };
 
+  const dropSchema = () => {
+    setSchema(null);
+  }
+
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <div className="App">
-        <Header />
+        <Header dropSchema={dropSchema}/>
         <Suspense>
           {schema ? (
             <SchemaForm schema={schema} />
