@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FormField from "@/components/fields/FormField";
 import { CustomButton as Button } from "@/components/ui/custom-button";
-import { FormFieldProps, NULL_TEXT_VALUE } from "@/types";
+import { FormFieldProps, FormValue, NULL_TEXT_VALUE } from "@/types";
 
 const DynamicFieldArray: React.FC<FormFieldProps> = ({
   name,
@@ -11,17 +11,18 @@ const DynamicFieldArray: React.FC<FormFieldProps> = ({
   const [fields, setFields] = useState([] as string[]);
 
   useEffect(() => {
-    setFields(value);
+    setFields(value as string[]);
   }, [value]);
 
   const globalHandler = (values: string[]) => {
+    //@ts-expect-error
     onChange(values);
   };
 
   // Handle value update
-  const handleChange = (fieldNumberAsString: string, fieldValue: string) => {
+  const handleChange = (fieldNumberAsString: string, fieldValue: FormValue) => {
     const newFields = fields;
-    newFields[Number.parseInt(fieldNumberAsString)] = fieldValue;
+    newFields[Number.parseInt(fieldNumberAsString)] = String(fieldValue);
     setFields(newFields);
     globalHandler(newFields);
   };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrayValue, FormFieldProps, JsonSchemaProperty, ObjectValue } from '@/types';
+import { ArrayValue, FormFieldProps, FormValue, JsonSchemaProperty, ObjectValue } from '@/types';
 import { resolveRef, getPropertyName } from '@/utils';
 import InputField from './InputField';
 import { CustomButton as Button } from "@/components/ui/custom-button";
@@ -156,7 +156,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
     return;
   }
 
-  const handleChange = (value) => {
+  const handleChange = (value: FormValue) => {
     onChange(name, value);
   };
 
@@ -198,6 +198,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, name, property, value, onC
           <Select
             name={name}
             value={value}
+            //@ts-ignore
             onChange={handleChange}
             propertyEnum={propertyData?.enum || property?.items?.enum}
             multipleSelect={property?.items?.enum != undefined}

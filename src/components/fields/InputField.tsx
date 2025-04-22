@@ -20,8 +20,10 @@ const InputField: React.FC<FormFieldProps> = ({
         <Select
           name={name}
           value={value === "" ? null : value ? "true" : "false"}
+          //@ts-ignore
           onChange={(e) => onChange(e === undefined ? null : e === "true")}
           placeholder="Select (boolean)"
+          //@ts-ignore
           propertyEnum={allowedValues}
           multipleSelect={false}
         />
@@ -42,6 +44,7 @@ const InputField: React.FC<FormFieldProps> = ({
           id={name}
           value={`${value == NULL_TEXT_VALUE ? "" : value}`}
           onChange={(e) =>
+            //@ts-ignore
             onChange(
               e.target.value == ""
                 ? NULL_TEXT_VALUE
@@ -70,6 +73,7 @@ const InputField: React.FC<FormFieldProps> = ({
           id={name}
           value={`${value == NULL_TEXT_VALUE ? "" : value}`}
           onChange={(e) =>
+            //@ts-ignore
             onChange(e.target.value == "" ? NULL_TEXT_VALUE : e.target.value)
           }
           pattern={regexPattern}

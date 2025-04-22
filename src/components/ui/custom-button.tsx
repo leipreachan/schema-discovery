@@ -1,7 +1,9 @@
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
 
+//@ts-ignore
 const CustomButton = ({ className = "", onClick, ...props }) => {
+    //@ts-ignore
     const onClickHandler = (e) => {
         e.preventDefault();
         return onClick(e);

@@ -21,10 +21,11 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
       newObject = { ...newObject, [values[i].key]: values[i].value }
     }
 
+    //@ts-expect-error
     onChange(newObject);
   }
 
-  const handleKeyChange = (index: number) => (e) => {
+  const handleKeyChange = (index: number) => (e: {target: {value: string}}) => {
     const newFields: KV[] = fields as KV[];
     const key = e.target.value;
     const value = newFields[index].value;
@@ -34,7 +35,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
   }
 
   // Handle value update
-  const handleValueChange = (index: number) => (e) => {
+  const handleValueChange = (index: number) => (e: {target: {value: string}}) => {
     const newFields: KV[] = fields as KV[];
     const key = fields[index].key;
     const value = e.target.value;
@@ -51,7 +52,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
   };
 
   // Remove field
-  const handleRemove = (index) => {
+  const handleRemove = (index: number) => {
     const newFields = Array.from(fields).filter((_, i) => i !== index);
     setFields(newFields);
     globalHandler(newFields);

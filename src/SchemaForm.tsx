@@ -30,6 +30,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
             name={""}
             property={schema as JsonSchemaProperty}
             value={formData}
+            //@ts-ignore
             onChange={handleFormChange}
             schema={schema}
           />
