@@ -1,6 +1,7 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { useEffect, useState } from 'react';
 import { useTheme } from './theme-provider';
+import { NULL_TEXT_VALUE } from '@/types';
 
 export const TextEditor = ({ value, onChange, ...props }) => {
   const [errMessage, setErrMessage] = useState<string>("");
@@ -14,16 +15,15 @@ export const TextEditor = ({ value, onChange, ...props }) => {
     }
   };
 
-  function removeEmptyValues(obj: object, andNodesToo: boolean = true, unwrap: boolean = false): FormData {
-    const newObj = unwrap ? JSON.parse(JSON.stringify(obj)) : obj;
+  function removeEmptyValues(obj: object, andNodesToo: boolean = true): FormData {
+    const newObj = JSON.parse(JSON.stringify(obj));
     if (typeof newObj === 'object' && newObj !== null) {
       // Recursively process child nodes
       for (const key in newObj) {
         newObj[key] = removeEmptyValues(newObj[key]);
         // Remove keys with empty objects or arrays
-        if (newObj[key] == "null"
+        if (newObj[key] == NULL_TEXT_VALUE
           || newObj[key] == null
-          || newObj[key] === ""
           || (Array.isArray(newObj[key]) && newObj[key].length <= 0)
           || (andNodesToo && typeof newObj[key] === 'object' && Object.keys(newObj[key]).length === 0)
         ) {

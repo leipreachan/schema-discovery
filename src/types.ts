@@ -58,3 +58,5 @@ export interface JsonSchema {
   $defs?: Record<string, JsonSchemaProperty>;
   description?: string;
 }
+
+export const NULL_TEXT_VALUE = "!!!###null";

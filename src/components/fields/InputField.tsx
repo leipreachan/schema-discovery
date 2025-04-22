@@ -1,7 +1,7 @@
 import React from 'react';
 import DynamicFieldArray from '@/components/fields/DynamicFieldArray';
 import { Input } from '@/components/ui/input';
-import { FormFieldProps } from '@/types';
+import { FormFieldProps, NULL_TEXT_VALUE } from '@/types';
 import Select from '@/components/ui/custom-select';
 import DynamicFieldObject from './DynamicFieldObject';
 
@@ -33,8 +33,8 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                 <Input
                     type={"text"}
                     id={name}
-                    value={`${value}`}
-                    onChange={(e) => onChange(Number.parseInt(e.target.value))}
+                    value={`${value == NULL_TEXT_VALUE ? "" : value}`}
+                    onChange={(e) => onChange(e.target.value == "" ? NULL_TEXT_VALUE: Number.parseInt(e.target.value))}
                     placeholder={placeHolder}
                 />
             )
@@ -52,8 +52,8 @@ const InputField: React.FC<FormFieldProps> = ({ name, onChange, value, pattern, 
                 <Input
                     type={"text"}
                     id={name}
-                    value={`${value}`}
-                    onChange={(e) => onChange(e.target.value)}
+                    value={`${value == NULL_TEXT_VALUE ? "" : value}`}
+                    onChange={(e) => onChange(e.target.value == "" ? NULL_TEXT_VALUE : e.target.value)}
                     pattern={regexPattern}
                     placeholder={placeHolder}
                 />
