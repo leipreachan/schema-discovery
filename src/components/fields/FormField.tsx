@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import Select from "@/components/ui/custom-select";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 const FormField: React.FC<FormFieldProps> = ({
   title,
@@ -22,6 +23,7 @@ const FormField: React.FC<FormFieldProps> = ({
   value,
   onChange,
   schema,
+  isRequired
 }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState("");
 
@@ -48,6 +50,7 @@ const FormField: React.FC<FormFieldProps> = ({
         : "property";
 
     const dotName = name ? name + "." : "";
+    const requiredProperties = property.required || [];
 
     return (
       <div className="w-full pt-4 pb-4 pl-4 object-field">
@@ -60,7 +63,7 @@ const FormField: React.FC<FormFieldProps> = ({
 
         {/* Render defined properties */}
         {property.properties &&
-          Object.entries(property.properties).map(([subName, subProperty]) => (
+          Object.entries(property.properties).map(([subName, subProperty]) => {console.log(subName, requiredProperties); return(
             <FormField
               key={`${dotName}${subName}`}
               title={`${dotName}${subName}`}
@@ -79,8 +82,9 @@ const FormField: React.FC<FormFieldProps> = ({
                 onChange(name, newValue);
               }}
               schema={schema}
+              isRequired={requiredProperties.includes(subName)}
             />
-          ))}
+          )})}
 
         {/* Render existing additional properties */}
         {additionalPropSchema &&
@@ -227,7 +231,7 @@ const FormField: React.FC<FormFieldProps> = ({
       {title && (
         <div className="break-words">
           <Label htmlFor={name}>
-            <p>{breakLongTitle(propertyData?.title || title)}</p>
+            <p>{breakLongTitle(propertyData?.title || title)} {isRequired ? <Badge variant="destructive">required</Badge> : ""}</p>
             {propertyData?.description && (
               <>
                 <div className="basis-full h-0"></div>
