@@ -47,6 +47,7 @@ export interface FormFieldProps {
   pattern?: string;
   type?: string;
   placeHolder?: string;
+  isRequired?: boolean;
 }
 
 export interface JsonSchema {
