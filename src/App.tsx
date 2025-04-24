@@ -5,9 +5,13 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/Header";
 import { UploadSchema } from "./UploadSchema";
 import usePersistState from "./lib/usePersistStateHook";
+import { UploadButton } from "./components/ui/upload-button";
 
 const App: React.FC = () => {
-  const [schema, setSchema] = usePersistState<JsonSchema | null>(null, 'schemaData');
+  const [schema, setSchema] = usePersistState<JsonSchema | null>(
+    null,
+    "schemaData"
+  );
 
   useEffect(() => {
     const schemaPath = `${import.meta.env.VITE_SCHEMA_NAME}`;
@@ -25,12 +29,16 @@ const App: React.FC = () => {
 
   const dropSchema = () => {
     setSchema(null);
-  }
+  };
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <div className="App">
-        <Header dropSchema={dropSchema}/>
+        <Header>
+          {schema && (
+            <UploadButton onClick={dropSchema} className="mr-2" />
+          )}
+        </Header>
         <Suspense>
           {schema ? (
             <SchemaForm schema={schema} />
