@@ -10,10 +10,11 @@ const CustomButton = ({ className = "", onClick, ...props }) => {
     }
     return (
         <Button
-            className={cn("text-gray-400 hover:text-white bg-black",
-                "hover:bg-gray-500 hover:shadow-xs",
-                "hover:shadow-gray-200",
-                "dark:hover:bg-gray-800 dark:hover:shadow-gray-900",
+        variant={"outline"}
+            className={cn(
+                "hover:shadow-sm",
+                "hover:shadow-gray-300",
+                "dark:hover:shadow-gray-800",
                 className)}
             onClick={onClickHandler}
             {...props}
