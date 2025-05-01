@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import Select from "@/components/ui/custom-select";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { FormFieldList } from "./FormFieldList";
 
 const FormField: React.FC<FormFieldProps> = ({
   title,
@@ -49,9 +50,6 @@ const FormField: React.FC<FormFieldProps> = ({
         ? getPropertyName(property.additionalProperties.$ref)
         : "property";
 
-    const dotName = name ? name + "." : "";
-    const requiredProperties = property.required || [];
-
     return (
       <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
@@ -62,54 +60,39 @@ const FormField: React.FC<FormFieldProps> = ({
         )}
 
         {/* Render defined properties */}
-        {property.properties &&
-          Object.entries(property.properties).map(([subName, subProperty]) => (
-            <FormField
-              key={`${dotName}${subName}`}
-              title={`${dotName}${subName}`}
-              name={`${dotName}${subName}`}
-              property={subProperty}
-              value={
-                objectValue[subName] || objectValue[subName] === false
+        {property.properties && (
+          <FormFieldList
+            fieldName={name}
+            properties={property.properties}
+            objectValue={objectValue}
+            schema={schema}
+            requiredPropertiesList={property.required || []}
+            onChange={onChange}
+            fieldValue={
+              (objectValue, subName, subValue) => 
+              objectValue[subName] || objectValue[subName] === false
                   ? objectValue[subName]
                   : ""
-              }
-              onChange={(_, subValue) => {
-                const newValue: ObjectValue = {
-                  ...objectValue,
-                  [subName]: subValue,
-                };
-                onChange(name, newValue);
-              }}
-              schema={schema}
-              isRequired={requiredProperties.includes(subName)}
-            />
-          ))}
+            }
+          />
+        )}
 
         {/* Render existing additional properties */}
         {additionalPropSchema &&
-          Object.entries(objectValue).map(([subName, subValue]) => {
-            if (!property.properties || !(subName in property.properties)) {
-              return (
-                <FormField
-                  key={`${dotName}${subName}`}
-                  title={`${dotName}${subName}`}
-                  name={`${dotName}${subName}`}
-                  property={additionalPropSchema}
-                  value={subValue}
-                  onChange={(_, newSubValue) => {
-                    const newValue: ObjectValue = {
-                      ...objectValue,
-                      [subName]: newSubValue,
-                    };
-                    onChange(name, newValue);
-                  }}
-                  schema={schema}
-                />
-              );
+          <FormFieldList
+            fieldName={name}
+            properties={objectValue}
+            objectValue={objectValue}
+            schema={schema}
+            requiredPropertiesList={[]}
+            onChange={onChange}
+            fieldValue={
+              (objectValue, subName, subValue) => 
+              subValue
             }
-            return null;
-          })}
+            fieldProperty={additionalPropSchema}
+          />
+          }
 
         {/* Add new additional property */}
         {additionalPropSchema && (
