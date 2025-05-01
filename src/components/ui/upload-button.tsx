@@ -17,7 +17,7 @@ export const UploadButton = ({
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger className={className}>
+        <TooltipTrigger className={className} asChild>
         <Button
             onClick={onClick}
             variant="outline"
