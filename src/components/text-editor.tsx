@@ -1,7 +1,8 @@
-import Editor, { useMonaco } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { NULL_TEXT_VALUE } from "@/types";
+import useCustomMonaco from "@/hooks/use-custom-monaco";
 
 //@ts-ignore
 export const TextEditor = ({ value, onChange, ...props }) => {
@@ -10,7 +11,7 @@ export const TextEditor = ({ value, onChange, ...props }) => {
   const [editedLine, setEditedLine] = useState<number>();
 
   const { theme } = useTheme();
-  const monaco = useMonaco();
+  const monaco = useCustomMonaco();
 
   const onChangeHandler = (val: string) => {
     setErrMessage("");

@@ -23,7 +23,7 @@ const FormField: React.FC<FormFieldProps> = ({
   value,
   onChange,
   schema,
-  isRequired
+  isRequired,
 }) => {
   const [additionalFieldName, setAdditionalFieldName] = useState("");
 
@@ -63,7 +63,7 @@ const FormField: React.FC<FormFieldProps> = ({
 
         {/* Render defined properties */}
         {property.properties &&
-          Object.entries(property.properties).map(([subName, subProperty]) => {console.log(subName, requiredProperties); return(
+          Object.entries(property.properties).map(([subName, subProperty]) => (
             <FormField
               key={`${dotName}${subName}`}
               title={`${dotName}${subName}`}
@@ -84,7 +84,7 @@ const FormField: React.FC<FormFieldProps> = ({
               schema={schema}
               isRequired={requiredProperties.includes(subName)}
             />
-          )})}
+          ))}
 
         {/* Render existing additional properties */}
         {additionalPropSchema &&
@@ -231,7 +231,10 @@ const FormField: React.FC<FormFieldProps> = ({
       {title && (
         <div className="break-words">
           <Label htmlFor={name}>
-            <p>{breakLongTitle(propertyData?.title || title)} {isRequired ? <Badge variant="destructive">required</Badge> : ""}</p>
+            <p>
+              {breakLongTitle(propertyData?.title || title)}{" "}
+              {isRequired ? <Badge variant="destructive">required</Badge> : ""}
+            </p>
             {propertyData?.description && (
               <>
                 <div className="basis-full h-0"></div>
