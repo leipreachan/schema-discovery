@@ -50,6 +50,42 @@ const FormField: React.FC<FormFieldProps> = ({
         ? getPropertyName(property.additionalProperties.$ref)
         : "property";
 
+    const addNewAdditionalProperty = () => {
+      if (additionalPropSchema && additionalFieldName) {
+        const newValue: ObjectValue = {
+          ...objectValue,
+          [additionalFieldName]:
+            additionalPropSchema.type === "object" ? {} : "",
+        };
+        onChange(name, newValue);
+        setAdditionalFieldName("");
+      }
+    };
+
+  const deleteByPath = (obj, path) => {
+      const keys = path.split('.');
+      let current = obj;
+  
+      for (let i = 0; i < keys.length - 1; i++) {
+          if (!current || typeof current !== 'object') return false;
+          current = current[keys[i]];
+      }
+  
+      if (current && typeof current === 'object') {
+          delete current[keys[keys.length - 1]];
+          return true;
+      }
+  
+      return false;
+  }
+
+    const deleteAdditionalProperty = (subField: string) => () => {
+      if (additionalPropSchema) {
+        deleteByPath(objectValue, `${subField}`);
+        onChange(name, objectValue);
+      }
+    }
+
     return (
       <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
@@ -68,17 +104,16 @@ const FormField: React.FC<FormFieldProps> = ({
             schema={schema}
             requiredPropertiesList={property.required || []}
             onChange={onChange}
-            fieldValue={
-              (objectValue, subName, subValue) => 
+            fieldValue={(objectValue, subName, subValue) =>
               objectValue[subName] || objectValue[subName] === false
-                  ? objectValue[subName]
-                  : ""
+                ? objectValue[subName]
+                : ""
             }
           />
         )}
 
         {/* Render existing additional properties */}
-        {additionalPropSchema &&
+        {additionalPropSchema && (
           <FormFieldList
             fieldName={name}
             properties={objectValue}
@@ -86,13 +121,11 @@ const FormField: React.FC<FormFieldProps> = ({
             schema={schema}
             requiredPropertiesList={[]}
             onChange={onChange}
-            fieldValue={
-              (objectValue, subName, subValue) => 
-              subValue
-            }
+            fieldValue={(objectValue, subName, subValue) => subValue}
             fieldProperty={additionalPropSchema}
+            deleteHandler={deleteAdditionalProperty}
           />
-          }
+        )}
 
         {/* Add new additional property */}
         {additionalPropSchema && (
@@ -108,19 +141,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 />
               </div>
               <div>
-                <Button
-                  onClick={() => {
-                    if (additionalFieldName) {
-                      const newValue: ObjectValue = {
-                        ...objectValue,
-                        [additionalFieldName]:
-                          additionalPropSchema.type === "object" ? {} : "",
-                      };
-                      onChange(name, newValue);
-                      setAdditionalFieldName("");
-                    }
-                  }}
-                >
+                <Button onClick={addNewAdditionalProperty}>
                   Add new {additionalPropName}
                 </Button>
               </div>
