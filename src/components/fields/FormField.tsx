@@ -3,6 +3,7 @@ import {
   ArrayValue,
   FormFieldProps,
   FormValue,
+  JSONObject,
   JsonSchemaProperty,
   ObjectValue,
 } from "@/types";
@@ -62,29 +63,29 @@ const FormField: React.FC<FormFieldProps> = ({
       }
     };
 
-  const deleteByPath = (obj, path) => {
-      const keys = path.split('.');
-      let current = obj;
-  
+    function deleteByPath(obj: JSONObject, path: string): boolean {
+      const keys = path.split(".");
+      let current: unknown = obj;
+
       for (let i = 0; i < keys.length - 1; i++) {
-          if (!current || typeof current !== 'object') return false;
-          current = current[keys[i]];
+        if (!current || typeof current !== "object") return false;
+        current = (current as JSONObject)[keys[i]];
       }
-  
-      if (current && typeof current === 'object') {
-          delete current[keys[keys.length - 1]];
-          return true;
+
+      if (current && typeof current === "object") {
+        delete (current as JSONObject)[keys[keys.length - 1]];
+        return true;
       }
-  
+
       return false;
-  }
+    }
 
     const deleteAdditionalProperty = (subField: string) => () => {
       if (additionalPropSchema) {
         deleteByPath(objectValue, `${subField}`);
         onChange(name, objectValue);
       }
-    }
+    };
 
     return (
       <div className="w-full pt-4 pb-4 pl-4 object-field">
@@ -104,9 +105,15 @@ const FormField: React.FC<FormFieldProps> = ({
             schema={schema}
             requiredPropertiesList={property.required || []}
             onChange={onChange}
-            fieldValue={(objectValue, subName, subValue) =>
-              objectValue[subName] || objectValue[subName] === false
-                ? objectValue[subName]
+            fieldValue={({
+              objectValue,
+              name,
+            }: {
+              objectValue: Record<string, FormValue>;
+              name: string;
+            }) =>
+              objectValue[name] || objectValue[name] === false
+                ? objectValue[name]
                 : ""
             }
           />
@@ -121,7 +128,7 @@ const FormField: React.FC<FormFieldProps> = ({
             schema={schema}
             requiredPropertiesList={[]}
             onChange={onChange}
-            fieldValue={(objectValue, subName, subValue) => subValue}
+            fieldValue={({value}: {value: FormValue}) => value}
             fieldProperty={additionalPropSchema}
             deleteHandler={deleteAdditionalProperty}
           />
