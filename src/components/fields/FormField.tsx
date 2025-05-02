@@ -17,6 +17,8 @@ import Select from "@/components/ui/custom-select";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { FormFieldList } from "./FormFieldList";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
 
 const FormField: React.FC<FormFieldProps> = ({
   title,
@@ -91,8 +93,8 @@ const FormField: React.FC<FormFieldProps> = ({
       <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
         {property.description && (
-          <p className="field-description font-normal">
-            {property.description}
+          <p className="prose field-description font-normal bg-sidebar-accent p-2 rounded-sm">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{property.description}</ReactMarkdown>
           </p>
         )}
 
@@ -128,7 +130,7 @@ const FormField: React.FC<FormFieldProps> = ({
             schema={schema}
             requiredPropertiesList={[]}
             onChange={onChange}
-            fieldValue={({value}: {value: FormValue}) => value}
+            fieldValue={({ value }: { value: FormValue }) => value}
             fieldProperty={additionalPropSchema}
             deleteHandler={deleteAdditionalProperty}
           />
@@ -236,24 +238,14 @@ const FormField: React.FC<FormFieldProps> = ({
         "hover:bg-amber-50 hover:shadow-gray-300",
         "dark:hover:bg-gray-700 dark:hover:shadow-gray-900",
         "hover:shadow-xs hover:rounded-md",
-        title && "grid grid-cols-2"
+        title && "grid grid-cols-2 gap-2"
       )}
     >
       {title && (
-        <div className="break-words">
-          <Label htmlFor={name}>
-            <p>
-              {breakLongTitle(propertyData?.title || title)}{" "}
-              {isRequired ? <Badge variant="destructive">required</Badge> : ""}
-            </p>
-            {propertyData?.description && (
-              <>
-                <div className="basis-full h-0"></div>
-                <p className="field-description font-normal bg-sidebar-accent p-2 rounded-sm">
-                  {propertyData?.description}
-                </p>
-              </>
-            )}
+        <div className="break-words align-middle">
+          <Label className="h-full" htmlFor={name}>
+            {breakLongTitle(propertyData?.title || title)}{" "}
+            {isRequired ? <Badge variant="destructive">required</Badge> : ""}
           </Label>
         </div>
       )}
@@ -278,6 +270,14 @@ const FormField: React.FC<FormFieldProps> = ({
           />
         )}
       </div>
+      {propertyData?.description && (
+      <>
+        <div className="prose field-description font-normal text-sm bg-sidebar-accent p-2 rounded-sm">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{propertyData?.description}</ReactMarkdown>
+        </div>
+        <div></div>
+      </>
+    )}
     </div>
   );
 };

@@ -78,6 +78,7 @@ const DynamicFieldObject: React.FC<FormFieldProps> = ({ name, value, onChange })
           />
           <Button
             onClick={() => handleRemove(index)}
+            className="ml-1"
           >
             X
           </Button>
