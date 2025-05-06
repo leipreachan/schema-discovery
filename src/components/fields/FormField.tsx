@@ -93,9 +93,9 @@ const FormField: React.FC<FormFieldProps> = ({
       <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
         {property.description && (
-          <p className="prose field-description font-normal bg-sidebar-accent p-2 rounded-sm">
+          <article className="prose field-description font-normal bg-sidebar-accent p-2 rounded-sm">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{property.description}</ReactMarkdown>
-          </p>
+          </article>
         )}
 
         {/* Render defined properties */}
@@ -271,12 +271,9 @@ const FormField: React.FC<FormFieldProps> = ({
         )}
       </div>
       {propertyData?.description && (
-      <>
-        <div className="prose field-description font-normal text-sm bg-sidebar-accent p-2 rounded-sm">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{propertyData?.description}</ReactMarkdown>
-        </div>
-        <div></div>
-      </>
+      <article className="prose dark:prose-invert field-description font-normal text-sm bg-sidebar-accent p-2 col-span-2 rounded-sm max-w-full m-2">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{propertyData?.description}</ReactMarkdown>
+      </article>
     )}
     </div>
   );

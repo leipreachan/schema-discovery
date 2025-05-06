@@ -1,7 +1,12 @@
 import { MouseEventHandler } from "react";
 import { Button } from "../ui/button";
 import FormField from "./FormField";
-import { FormValue, JsonSchema, JsonSchemaProperty, ObjectValue } from "@/types";
+import {
+  FormValue,
+  JsonSchema,
+  JsonSchemaProperty,
+  ObjectValue,
+} from "@/types";
 
 interface FormFieldListProps {
   properties: Record<string, JsonSchemaProperty> | ObjectValue;
@@ -10,9 +15,15 @@ interface FormFieldListProps {
   schema: JsonSchema | undefined;
   requiredPropertiesList: string[];
   onChange: (name: string, value: FormValue) => void;
-  fieldValue: (arg0: { objectValue: Record<string, FormValue>, name: string, value: FormValue }) => FormValue;
+  fieldValue: (arg0: {
+    objectValue: Record<string, FormValue>;
+    name: string;
+    value: FormValue;
+  }) => FormValue;
   fieldProperty?: JsonSchemaProperty;
-  deleteHandler?: (arg0: string) => MouseEventHandler<HTMLButtonElement> | undefined;
+  deleteHandler?: (
+    arg0: string
+  ) => MouseEventHandler<HTMLButtonElement> | undefined;
 }
 export const FormFieldList = ({
   properties,
