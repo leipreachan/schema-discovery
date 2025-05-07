@@ -89,7 +89,7 @@ const FormField: React.FC<FormFieldProps> = ({
     };
 
     return (
-      <div className="w-full pt-4 pb-4 pl-4 object-field">
+      <div className="w-full pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
         {property.description && (
           <Description description={property.description} />

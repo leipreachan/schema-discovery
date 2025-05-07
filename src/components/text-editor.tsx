@@ -98,7 +98,7 @@ export const TextEditor = ({ value, onChange, ...props }) => {
       )}
 
       <Editor
-        className="w-full border-2"
+        className="w-full"
         line={editedLine}
         value={textValue}
         defaultLanguage="json"
