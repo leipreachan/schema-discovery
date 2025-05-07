@@ -1,20 +1,21 @@
 // SchemaForm.tsx
-import React from "react";
-import FormField from "@/components/fields/FormField";
-import { JsonSchema, FormData, JsonSchemaProperty } from "@/types";
-import { TextEditor } from "@/components/text-editor";
+import React, { useEffect, useState } from "react";
+import { JsonSchema, FormData } from "@/types";
+import { TextEditorPane } from "@/components/text-editor";
 import usePersistState from "@/lib/usePersistStateHook";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { FormFieldPane } from "./components/FormFieldPane";
 
 interface SchemaFormProps {
   schema: JsonSchema;
+  setHideHeader: unknown;
 }
 
-const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
+const SchemaForm: React.FC<SchemaFormProps> = ({ schema, setHideHeader }) => {
   const [formData, setFormData] = usePersistState<FormData>({}, "formData");
 
   const handleFormChange = (name: string, value: FormData) => {
@@ -27,22 +28,17 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema }) => {
       direction="horizontal"
       className="h-screen dark:bg-zinc-800"
     >
-      <ResizablePanel defaultSize={50} style={{overflow: "auto"}} className="h-screen">
-        <div className="h-screen">
-          <FormField
-            title={""}
-            name={""}
-            property={schema as JsonSchemaProperty}
-            value={formData}
-            //@ts-ignore
-            onChange={handleFormChange}
-            schema={schema}
-          />
-        </div>
+      <ResizablePanel defaultSize={50}>
+        <FormFieldPane
+          formData={formData}
+          onChange={handleFormChange}
+          schema={schema}
+          setHideHeader={setHideHeader}
+        />
       </ResizablePanel>
       <ResizableHandle className="w-0.5 bg-blue-100" />
       <ResizablePanel defaultSize={50}>
-        <TextEditor value={formData} onChange={handleFormChange} />
+        <TextEditorPane value={formData} onChange={handleFormChange} />
       </ResizablePanel>
     </ResizablePanelGroup>
   );

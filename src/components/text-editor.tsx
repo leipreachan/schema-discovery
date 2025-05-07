@@ -5,7 +5,7 @@ import { NULL_TEXT_VALUE } from "@/types";
 import useCustomMonaco from "@/hooks/use-custom-monaco";
 
 //@ts-ignore
-export const TextEditor = ({ value, onChange, ...props }) => {
+export const TextEditorPane = ({ value, onChange, ...props }) => {
   const [textValue, setTextValue] = useState<string>("");
   const [errMessage, setErrMessage] = useState<string>("");
   const [editedLine, setEditedLine] = useState<number>();

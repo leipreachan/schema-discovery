@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useState } from "react";
 import SchemaForm from "@/SchemaForm";
 import { JsonSchema } from "./types";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -12,6 +12,12 @@ const App: React.FC = () => {
     null,
     "schemaData"
   );
+  const [hideHeader, setHideHeader] = useState(false);
+
+  useEffect(() => {
+    console.log(hideHeader);
+  }, [hideHeader]);
+
 
   useEffect(() => {
     const schemaPath = `${import.meta.env.VITE_SCHEMA_NAME}`;
@@ -34,14 +40,18 @@ const App: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <div className="App">
-        <Header>
-          {schema && (
-            <UploadButton onClick={dropSchema} className="mr-2" />
-          )}
+        <Header
+          className={
+            hideHeader
+              ? "-translate-y-full opacity-0 h-0"
+              : "translate-y-0 opacity-100 h-8"
+          }
+        >
+          {schema && <UploadButton onClick={dropSchema} className="mr-2" />}
         </Header>
         <Suspense>
           {schema ? (
-            <SchemaForm schema={schema} />
+            <SchemaForm schema={schema} setHideHeader={setHideHeader} />
           ) : (
             <UploadSchema onUpload={uploadHandler} />
           )}
