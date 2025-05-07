@@ -17,8 +17,7 @@ import Select from "@/components/ui/custom-select";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { FormFieldList } from "./FormFieldList";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
+import { Description } from "../Description";
 
 const FormField: React.FC<FormFieldProps> = ({
   title,
@@ -93,9 +92,7 @@ const FormField: React.FC<FormFieldProps> = ({
       <div className="w-full pt-4 pb-4 pl-4 object-field">
         <h3>{property.title || name}</h3>
         {property.description && (
-          <article className="prose field-description font-normal bg-sidebar-accent p-2 rounded-sm">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{property.description}</ReactMarkdown>
-          </article>
+          <Description description={property.description} />
         )}
 
         {/* Render defined properties */}
@@ -271,9 +268,7 @@ const FormField: React.FC<FormFieldProps> = ({
         )}
       </div>
       {propertyData?.description && (
-      <article className="prose dark:prose-invert field-description font-normal text-sm bg-sidebar-accent p-2 col-span-2 rounded-sm max-w-full m-2">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{propertyData?.description}</ReactMarkdown>
-      </article>
+      <Description description={propertyData.description} />
     )}
     </div>
   );
