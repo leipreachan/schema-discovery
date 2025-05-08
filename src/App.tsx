@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { UploadSchema } from "./UploadSchema";
 import usePersistState from "./lib/usePersistStateHook";
 import { UploadButton } from "./components/ui/upload-button";
+import { ModeToggle } from "./components/mode-toggle";
 
 const App: React.FC = () => {
   const [schema, setSchema] = usePersistState<JsonSchema | null>(
@@ -13,11 +14,6 @@ const App: React.FC = () => {
     "schemaData"
   );
   const [hideHeader, setHideHeader] = useState(false);
-
-  useEffect(() => {
-    console.log(hideHeader);
-  }, [hideHeader]);
-
 
   useEffect(() => {
     const schemaPath = `${import.meta.env.VITE_SCHEMA_NAME}`;
@@ -41,13 +37,14 @@ const App: React.FC = () => {
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <div className="App">
         <Header
-          className={
-            hideHeader
-              ? "-translate-y-full opacity-0 h-0"
-              : "translate-y-0 opacity-100 h-8"
-          }
+          text={hideHeader ? "" : "JSON Schema Discovery"}
+          className={hideHeader
+            ? " bg-gray-300 h-2 p-0"
+            : "opacity-100"}
+          setHideHeader={setHideHeader}
         >
-          {schema && <UploadButton onClick={dropSchema} className="mr-2" />}
+          {hideHeader || (schema && <UploadButton onClick={dropSchema} className="mr-2" />)}
+          {hideHeader || <ModeToggle className="float-right" />}
         </Header>
         <Suspense>
           {schema ? (

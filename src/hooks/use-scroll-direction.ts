@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
 export function useScrollDirection(
-  scrollRef: React.RefObject<HTMLElement>,
+  scrollRef: React.RefObject<HTMLElement | null>,
   onScrollDirectionChange: (dir: "up" | "down") => void
 ) {
   const lastY = useRef(0);
 
   useEffect(() => {
-    const el = scrollRef.current;
+    const el = scrollRef?.current;
     if (!el) return;
 
     const handleScroll = () => {

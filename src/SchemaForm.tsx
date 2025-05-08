@@ -1,5 +1,5 @@
 // SchemaForm.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { JsonSchema, FormData } from "@/types";
 import { TextEditorPane } from "@/components/text-editor";
 import usePersistState from "@/lib/usePersistStateHook";
@@ -12,7 +12,7 @@ import { FormFieldPane } from "./components/FormFieldPane";
 
 interface SchemaFormProps {
   schema: JsonSchema;
-  setHideHeader: unknown;
+  setHideHeader: (arg0: boolean) => void;
 }
 
 const SchemaForm: React.FC<SchemaFormProps> = ({ schema, setHideHeader }) => {
@@ -31,6 +31,7 @@ const SchemaForm: React.FC<SchemaFormProps> = ({ schema, setHideHeader }) => {
       <ResizablePanel defaultSize={50}>
         <FormFieldPane
           formData={formData}
+          //@ts-ignore
           onChange={handleFormChange}
           schema={schema}
           setHideHeader={setHideHeader}
