@@ -4,7 +4,7 @@ import { JsonSchema } from "./types";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/Header";
 import { UploadSchema } from "./UploadSchema";
-import usePersistState from "./lib/usePersistStateHook";
+import usePersistState from "./hooks/use-persist-state";
 import { UploadButton } from "./components/ui/upload-button";
 import { ModeToggle } from "./components/mode-toggle";
 

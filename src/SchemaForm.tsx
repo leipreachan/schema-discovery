@@ -2,7 +2,7 @@
 import React from "react";
 import { JsonSchema, FormData } from "@/types";
 import { TextEditorPane } from "@/components/text-editor";
-import usePersistState from "@/lib/usePersistStateHook";
+import usePersistState from "@/hooks/use-persist-state";
 import {
   ResizableHandle,
   ResizablePanel,
