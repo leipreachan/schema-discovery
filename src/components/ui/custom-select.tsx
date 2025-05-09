@@ -50,7 +50,7 @@ const Select = forwardRef<unknown, ReactSelectProps<unknown>>(({ error, placehol
                         isFocused && !isSelected && 'bg-accent text-accent-foreground',
                         !isFocused && !isSelected && 'text-popover-foreground hover:bg-accent hover:text-accent-foreground',
                     ),
-                multiValue: () => 'inline-flex items-center bg-secondary text-secondary-foreground mr-1',
+                multiValue: () => 'inline-flex items-center bg-secondary text-secondary-foreground mr-1 rounded-sm',
                 multiValueLabel: () => 'px-2 text-xs leading-none',
                 multiValueRemove: () =>
                     cn('flex items-center justify-center p-1', 'hover:bg-destructive hover:text-destructive-foreground'),
